@@ -1,0 +1,6 @@
+Rewrites the stylesheets on a web page to be as well organized and
+efficient as logically possible.  Inspects the calculated CSS on
+the DOM and creates a new stylesheet for any page.
+
+To run, visit a page in Chrome, open the JS console, and paste the
+contents of css.js inside.
