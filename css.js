@@ -60,31 +60,20 @@ function difference(a, b) {
   return c;
 }
 
-function consolidate(node) {
-  newkids = _.map(node.children, consolidate);
+function consolidate(snode) {
+  newkids = _.map(snode.children, consolidate);
   common  = intersect(_.map(newkids, function(k) { return k.css } ));
   for(i in newkids) {
     newkids[i].css = difference(newkids[i].css, common);
   }
-  jQuery.extend(node.css, common);
+  jQuery.extend(snode.css, common);
   return {
-    tag: node.tag,
-    class: node.class,
-    id: node.id,
-    css: node.css,
+    tag: snode.tag,
+    class: snode.class,
+    id: snode.id,
+    css: snode.css,
     children: newkids
   }
-}
-
-var filterCss = function(snode, filterFunc) {
-  snode.css = _.select(snode.css, filterFunc);
-  for(i in snode.children) {
-    filterCss(snode.children[i], filterFunc);
-  }
-};
-
-function removeWebkitCss(cssItem) {
-  return !cssItem.substring(0, "webkit".length) === "Webkit";
 }
 
 function shadowDom(elt) {
@@ -97,3 +86,42 @@ function shadowDom(elt) {
     children: _.map(elt.children(), function(c){ return shadowDom($(c)) })
   }
 }
+
+function renderStylesheet(snode, path) {
+  var result = "";
+  var hasAttrs = false;
+  var block = path + " {\n";
+  for(attr in snode.css) {
+    block += "\t" + attr + ': ' + snode.css[attr] + ";\n";
+    hasAttrs = true;
+  }
+  block += "}\n\n";
+  if(hasAttrs) {
+    result += block;
+  }
+
+  var classy   = function(snode) {
+    var x = snode.tag;
+    if(snode.id) {
+      x += "#" + snode.id;
+    } else if(snode.class) {
+      x += "." + snode.class.split(' ').join('.');
+    }
+    return x;
+  }
+  var relative = function(snode, path) {
+    return snode.id ? classy(snode) : path + ' > ' + classy(snode);
+  }
+
+  var seen = {};
+  for(i in snode.children) {
+    var c = relative(snode.children[i], path);
+    if(! (c in seen)) {
+      seen[c] = true;
+      result += renderStylesheet(snode.children[i], c);
+    }
+  }
+  return result;
+}
+
+renderStylesheet(consolidate(shadowDom($('body'))), 'body');
