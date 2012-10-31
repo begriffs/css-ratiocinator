@@ -1,34 +1,21 @@
 script = document.createElement("script");
-script.setAttribute("src", "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js");
+script.setAttribute("src", "//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js");
 document.getElementsByTagName("head")[0].appendChild(script);
 
 script = document.createElement("script");
-script.setAttribute("src", "http://code.jquery.com/jquery.min.js");
+script.setAttribute("src", "//code.jquery.com/jquery.min.js");
 document.getElementsByTagName("head")[0].appendChild(script);
 
 function computedCss(dom) {
-  var style;
-  var returns = {};
-  if(window.getComputedStyle){
-    var camelize = function(a,b){
-      return b.toUpperCase();
-    };
-    style = window.getComputedStyle(dom, null);
-    for(var i = 0, l = style.length; i < l; i++){
-      var prop = style[i];
-      var camel = prop.replace(/\-([a-z])/g, camelize);
-      var val = style.getPropertyValue(prop);
-      returns[camel] = val;
-    };
-    return returns;
-  };
-  if(style = dom.currentStyle){
-    for(var prop in style){
-      returns[prop] = style[prop];
-    };
-    return returns;
-  };
-  return this.css();
+  var ret   = {},
+      style = window.getComputedStyle ? window.getComputedStyle(dom, null) : dom.currentStyle;
+  if(!style) {
+    return this.css();
+  }
+  for(var prop in style) {
+    ret[prop] = style.getPropertyValue(prop);
+  }
+  return ret;
 }
 
 function repeated(f) {
@@ -88,9 +75,9 @@ function shadowDom(elt) {
 }
 
 function renderStylesheet(snode, path) {
-  var result = "";
-  var hasAttrs = false;
-  var block = path + " {\n";
+  var result   = "",
+      hasAttrs = false,
+      block    = path + " {\n";
   for(attr in snode.css) {
     block += "\t" + attr + ': ' + snode.css[attr] + ";\n";
     hasAttrs = true;
@@ -103,7 +90,7 @@ function renderStylesheet(snode, path) {
   var classy   = function(snode) {
     var x = snode.tag;
     if(snode.id) {
-      x += "#" + snode.id;
+      x = "#" + snode.id;
     } else if(snode.class) {
       x += "." + snode.class.split(' ').join('.');
     }
