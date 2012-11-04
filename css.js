@@ -1,6 +1,8 @@
 /*jslint browser: true, indent: 2, nomen: true, plusplus: true */
 /*global _: true */
 /*global $: true */
+/*global jQuery: true */
+/*global console: true */
 
 (function () {
   "use strict";
@@ -13,7 +15,7 @@
     };
   }
 
-  var script,
+  var script = document.createElement("script"),
     intersect = repeated(function (a, b) {
       var x, c = {};
       for (x in a) {
@@ -23,14 +25,6 @@
       }
       return c;
     });
-
-  script = document.createElement("script");
-  script.setAttribute("src", "//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js");
-  document.getElementsByTagName("head")[0].appendChild(script);
-
-  script = document.createElement("script");
-  script.setAttribute("src", "//code.jquery.com/jquery.min.js");
-  document.getElementsByTagName("head")[0].appendChild(script);
 
   function computedCss(dom) {
     var ret = {}, prop,
@@ -124,5 +118,20 @@
     return result;
   }
 
-  return renderStylesheet(consolidate(shadowDom($('body'))), 'body');
+  function onScriptsLoaded() {
+    console.log("Calculating rational style...");
+    console.log(renderStylesheet(consolidate(shadowDom($('body'))), 'body'));
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////////////
+  // Load jQuery, underscore and klass.
+  // Begin the fun once they have loaded.
+  script.src    = "//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js";
+  script.onload = function () {
+    jQuery.getScript('//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js',
+      function () {
+        jQuery.getScript('//raw.github.com/ded/klass/master/klass.min.js', onScriptsLoaded);
+      });
+  };
+  document.getElementsByTagName("head")[0].appendChild(script);
 }());
