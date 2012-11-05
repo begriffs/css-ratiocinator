@@ -7,72 +7,96 @@
 (function () {
   "use strict";
 
-  function repeated(f) {
-    return function (ary) {
-      if (ary.length === 0) { return []; }
-      var seed = ary.pop();
-      return _.reduce(ary, function (memo, obj) { return f(memo, obj); }, seed);
-    };
+  var script;
+
+  function camel2dashed(str) {
+    return str.replace(/([A-Z])/g, function (c) {return "-" + c.toLowerCase(); });
   }
 
-  var script = document.createElement("script"),
-    intersect = repeated(function (a, b) {
-      var x, c = {};
-      for (x in a) {
-        if (a.hasOwnProperty(x) && b.hasOwnProperty(x) && _.isEqual(a[x], b[x])) {
-          c[x] = a[x];
-        }
-      }
-      return c;
-    });
-
-  function computedCss(dom) {
-    var ret = {}, prop,
-      style = window.getComputedStyle ? window.getComputedStyle(dom, null) : dom.currentStyle;
+  function computedCssNode(elt) {
+    var ret = {}, prop, val,
+      style = window.getComputedStyle ? window.getComputedStyle(elt, null) : elt.currentStyle;
     for (prop in style) {
       if (style.hasOwnProperty(prop)) {
-        ret[prop] = style.getPropertyValue(prop);
+        val = style.getPropertyValue(prop);
+        if (val) {
+          ret[camel2dashed(prop)] = val;
+        }
       }
     }
     return ret;
   }
 
-  function difference(a, b) {
-    var x, c = {};
-
-    if (!a || !b) { return {}; }
-    for (x in a) {
-      if (a.hasOwnProperty(x) && !b.hasOwnProperty(x)) {
-        c[x] = a[x];
-      }
-    }
-    return c;
-  }
-
-  function consolidate(snode) {
-    var newkids = _.map(snode.children, consolidate),
-      common = intersect(_.map(newkids, function (k) { return k.css; })),
-      i;
-    for (i = 0; i < newkids.length; i++) {
-      newkids[i].css = difference(newkids[i].css, common);
-    }
-    $.extend(snode.css, common);
-    return {
-      tag: snode.tag,
-      klass: snode.klass,
-      id: snode.id,
-      css: snode.css,
-      children: newkids
-    };
-  }
-
-  function shadowDom(elt) {
+  function computedCssTree(elt) {
     return {
       tag: elt[0].tagName,
       klass: elt.attr('class'),
       id: elt.attr('id'),
-      css: computedCss(elt[0]),
-      children: _.map(elt.children(), function (c) { return shadowDom($(c)); })
+      css: computedCssNode(elt[0]),
+      children: _.map(elt.children(), function (c) { return computedCssTree($(c)); })
+    };
+  }
+
+  function repeatedly(f) {
+    return function (args) {
+      if (args.length === 0) { return {}; }
+      var seed = args.pop();
+      return _.reduce(args, function (memo, obj) { return f(memo, obj); }, seed);
+    };
+  }
+
+  function filterKeys(obj, valid_keys) {
+    return _.intersection(_.keys(obj), valid_keys).reduce(function (result, key) {
+      result[key] = obj[key];
+      return result;
+    }, {});
+  }
+
+  function objectIntersection(array) {
+    function simpleIntersection(a, b) {
+      return filterKeys(a, _.intersection(_.keys(a), _.keys(b)).filter(function (key) {
+        return _.isEqual(a[key], b[key]);
+      }));
+    }
+    return repeatedly(simpleIntersection)(array);
+  }
+
+  function objectDifference(a, b) {
+    return filterKeys(a, _.difference(_.keys(a), _.keys(b)));
+  }
+
+  function liftHeritable(node) {
+    var i, heritable = [
+      'cursor', 'font-family', 'font-weight', 'font-stretch', 'font-style',
+      'font-size', 'font-size-adjust', 'font', 'font-synthesis', 'font-kerning',
+      'font-variant-ligatures', 'font-variant-position', 'font-variant-caps',
+      'font-variant-numeric', 'font-variant-alternatives', 'font-variant-east-asian',
+      'font-variant', 'font-feature-settings', 'font-language-override', 'text-transform',
+      'white-space', 'tab-size', 'line-break', 'word-break', 'hyphens', 'word-wrap',
+      'overflow-wrap', 'text-align', 'text-align-last', 'text-justify', 'word-spacing',
+      'letter-spacing', 'text-indent', 'hanging-punctuation', 'text-decoration-skip',
+      'text-underline-skip', 'text-emphasis-style', 'text-emphasis-color', 'text-emphasis',
+      'text-emphasis-position', 'text-shadow', 'color', 'border-collapse', 'border-spacing',
+      'caption-side', 'direction', 'elevation', 'empty-cells', 'line-height', 'list-style-image',
+      'list-style-position', 'list-style-type', 'list-style', 'orphans', 'pitch-range',
+      'pitch', 'quotes', 'richness', 'speak-header', 'speak-numeral', 'speak-punctuation',
+      'speak', 'speech-rate', 'stress', 'visibility', 'voice-family', 'volume', 'widows'],
+      disinherited_kids = _.map(node.children, liftHeritable),
+      common = filterKeys(
+        objectIntersection(_.map(disinherited_kids, function (k) { return k.css; })),
+        heritable
+      );
+
+    for (i = 0; i < disinherited_kids.length; i++) {
+      disinherited_kids[i].css = objectDifference(disinherited_kids[i].css, common);
+    }
+    $.extend(node.css, common);
+    return {
+      tag: node.tag,
+      klass: node.klass,
+      id: node.id,
+      css: node.css,
+      children: disinherited_kids
     };
   }
 
@@ -119,19 +143,20 @@
   }
 
   function onScriptsLoaded() {
-    console.log("Calculating rational style...");
-    console.log(renderStylesheet(consolidate(shadowDom($('body'))), 'body'));
+    console.log("Lifting heritable styles...");
+    console.log(renderStylesheet(liftHeritable(computedCssTree($('body'))), 'body'));
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
-  // Load jQuery, underscore and klass.
-  // Begin the fun once they have loaded.
+  // Load jQuery and underscore then begin the fun.
+  console.log("Loading required external scripts...");
+  script        = document.createElement("script");
   script.src    = "//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js";
   script.onload = function () {
-    jQuery.getScript('//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js',
-      function () {
-        jQuery.getScript('//raw.github.com/ded/klass/master/klass.min.js', onScriptsLoaded);
-      });
+    jQuery.getScript(
+      '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js',
+      onScriptsLoaded
+    );
   };
   document.getElementsByTagName("head")[0].appendChild(script);
 }());
