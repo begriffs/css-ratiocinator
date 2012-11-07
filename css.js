@@ -14,17 +14,16 @@
   }
 
   function computedCssNode(elt) {
-    var ret = {}, prop, val,
-      style = window.getComputedStyle ? window.getComputedStyle(elt, null) : elt.currentStyle;
-    for (prop in style) {
-      if (style.hasOwnProperty(prop)) {
-        val = style.getPropertyValue(prop);
-        if (val) {
-          ret[camel2dashed(prop)] = val;
+    var style = window.getComputedStyle ? window.getComputedStyle(elt, null) : elt.currentStyle,
+      styleValue;
+    return _.reduce(_.keys(style),
+      function (memo, prop) {
+        styleValue = style.getPropertyValue(prop);
+        if (styleValue) {
+          memo[prop] = styleValue;
         }
-      }
-    }
-    return ret;
+        return memo;
+      }, {});
   }
 
   function computedCssTree(elt) {
@@ -34,14 +33,6 @@
       id: elt.attr('id'),
       css: computedCssNode(elt[0]),
       children: _.map(elt.children(), function (c) { return computedCssTree($(c)); })
-    };
-  }
-
-  function repeatedly(f) {
-    return function (args) {
-      if (args.length === 0) { return {}; }
-      var seed = args.pop();
-      return _.reduce(args, function (memo, obj) { return f(memo, obj); }, seed);
     };
   }
 
@@ -58,6 +49,14 @@
         return _.isEqual(a[key], b[key]);
       }));
     }
+    function repeatedly(f) {
+      return function (args) {
+        if (args.length === 0) { return {}; }
+        var seed = args.pop();
+        return _.reduce(args, function (memo, obj) { return f(memo, obj); }, seed);
+      };
+    }
+
     return repeatedly(simpleIntersection)(array);
   }
 
@@ -98,6 +97,59 @@
       css: node.css,
       children: disinherited_kids
     };
+  }
+
+  function stripDefaultStyles(node) {
+    var defaults = { background: 'rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box',
+      border: '0px none rgb(0, 0, 0)', bottom: 'auto', clear: 'none', clip: 'auto', cursor: 'auto',
+      direction: 'ltr', fill: '#000000', filter: 'none', float: 'none', kerning: '0', left: 'auto',
+      mask: 'none', opacity: "1", outline: 'rgb(0, 0, 0) none 0px', overflow: 'visible', position: 'static',
+      resize: 'none', right: 'auto', stroke: 'none', top: 'auto', zoom: '1'};
+
+    _.each(_.keys(defaults), function (def) {
+      if (node.css[def] === defaults[def]) {
+        delete node.css[def];
+      }
+    });
+    _.each(node.children, function (k) {
+      stripDefaultStyles(k);
+    });
+  }
+
+  function selectorsUsed(node) {
+    function tagDict(node) {
+      var dict = {};
+      dict[node.tag] = true;
+      if (node.klass) {
+        dict['.' + node.klass] = true;
+      }
+      _.each(node.children, function (k) { $.extend(dict, tagDict(k)); });
+      return dict;
+    }
+    return _.keys(tagDict(node));
+  }
+
+  function select(root, condition) {
+    var collection = [];
+    if (condition(root)) {
+      collection.push(root);
+    }
+    _.each(root.children, function (k) { collection = collection.concat(select(k, condition)); });
+    return collection;
+  }
+
+  function styleConsolidations(node) {
+    return _.reduce(selectorsUsed(node),
+      function (memo, selector) {
+        var instances = select(node, function (k) {
+          if (selector[0] === '.') {
+            return ('.' + k.klass) === selector;
+          }
+          return k.tag === selector;
+        });
+        memo[selector] = objectIntersection(_.map(instances, function (i) { return i.css; }));
+        return memo;
+      }, {});
   }
 
   function renderStylesheet(snode, path) {
@@ -144,7 +196,17 @@
 
   function onScriptsLoaded() {
     console.log("Lifting heritable styles...");
-    console.log(renderStylesheet(liftHeritable(computedCssTree($('body'))), 'body'));
+    var lifted = liftHeritable(computedCssTree($('body'))),
+      tagWeights;
+    console.log("Stripping default styles...");
+    stripDefaultStyles(lifted);
+
+    tagWeights = _.map(styleConsolidations(lifted), function (properties, tag) {
+      var ret = {};
+      ret[tag] = _.keys(properties).length;
+      return ret;
+    });
+    console.log(JSON.stringify(tagWeights));
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
