@@ -103,7 +103,7 @@
   }
 
   function stripDefaultStyles(node) {
-    var defaults = { background: 'none',
+    var defaults = { background: 'rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box',
       border: 'none', bottom: 'auto', clear: 'none', clip: 'auto', cursor: 'auto',
       direction: 'ltr', fill: '#000000', filter: 'none', float: 'none', kerning: '0', left: 'auto',
       mask: 'none', opacity: "1", outline: 'none', overflow: 'visible', position: 'static',
@@ -125,7 +125,9 @@
       var dict = {};
       dict[node.tag] = true;
       if (node.klass) {
-        dict['.' + node.klass] = true;
+        _.each(node.klass.split(/\s+/), function (klass) {
+          dict['.' + klass] = true;
+        });
       }
       _.each(node.children, function (k) { $.extend(dict, tagDict(k)); });
       return dict;
@@ -142,20 +144,35 @@
     return collection;
   }
 
-  function checkMatch(node, selector) {
-    if (selector[0] === '.') {
-      return ('.' + node.klass) === selector;
+  function apply(condition, transformation) {
+    function applyToNode(node) {
+      var ret = condition(node) ? transformation(node) : node;
+      ret.children = _.map(ret.children, function (k) {
+        return applyToNode(k, condition, transformation);
+      });
+      return ret;
     }
-    return node.tag === selector;
+    return applyToNode;
   }
 
+  function checkMatch(selector) {
+    return function (node) {
+      var classRegexp;
+      if (!node) {
+        return false;
+      }
+      if (selector[0] === '.' && node.klass) {
+        classRegexp = '\b' + selector.substring(1) + '\b';
+        return node.klass.match(classRegexp);
+      }
+      return node.tag === selector;
+    };
+  }
 
   function styleConsolidations(node) {
     return _.reduce(selectorsUsed(node),
       function (memo, selector) {
-        var instances = select(node, function (k) {
-          return checkMatch(k, selector);
-        });
+        var instances = select(node, checkMatch(selector));
         memo[selector] = objectIntersection(_.map(instances, function (i) { return i.css; }));
         return memo;
       }, {});
@@ -177,30 +194,33 @@
     });
   }
 
+  function removeStyleFromSelected(node, selector, style) {
+    return apply(checkMatch(selector), function (node) {
+      var ret = node;
+      ret.css = objectDifference(node.css, style);
+      return ret;
+    })(node);
+  }
+
   function onScriptsLoaded() {
     console.log("Lifting heritable styles...");
     var lifted = liftHeritable(computedCssTree($('body'))),
       primeSelector,
       consolidated,
       processed = [],
-      i;
+      i,
+      n = selectorsUsed(lifted).length;
     console.log("Stripping default styles...");
     stripDefaultStyles(lifted);
 
-    for (i = 0; i < 2; i++) {
+    for (i = 0; i < n; i++) {
       consolidated = styleConsolidations(lifted);
       primeSelector = _.keys(_.sortBy(selectorPropertyCount(consolidated), function (choice) {
         return -(_.values(choice)[0]);
       })[0])[0];
       renderStyle(primeSelector, consolidated[primeSelector]);
       processed.push(primeSelector);
-      _.each(select(lifted,
-        function (node) {
-          return checkMatch(node, primeSelector);
-        }),
-        function (choice) {
-          console.log(JSON.stringify(choice));
-        });
+      lifted = removeStyleFromSelected(lifted, primeSelector, consolidated[primeSelector]);
     }
   }
 
