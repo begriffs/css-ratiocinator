@@ -27,6 +27,9 @@
   }
 
   function computedCssTree(elt) {
+    if (!elt) {
+      return [];
+    }
     return {
       tag: elt[0].tagName,
       klass: elt.attr('class'),
@@ -107,7 +110,8 @@
       resize: 'none', right: 'auto', stroke: 'none', top: 'auto', zoom: '1'};
 
     _.each(_.keys(defaults), function (def) {
-      if (node.css[def] === defaults[def]) {
+      var prop = node.css[def];
+      if (prop && prop.indexOf(defaults[def]) > -1) {
         delete node.css[def];
       }
     });
