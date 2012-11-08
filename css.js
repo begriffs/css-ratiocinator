@@ -142,75 +142,66 @@
     return collection;
   }
 
+  function checkMatch(node, selector) {
+    if (selector[0] === '.') {
+      return ('.' + node.klass) === selector;
+    }
+    return node.tag === selector;
+  }
+
+
   function styleConsolidations(node) {
     return _.reduce(selectorsUsed(node),
       function (memo, selector) {
         var instances = select(node, function (k) {
-          if (selector[0] === '.') {
-            return ('.' + k.klass) === selector;
-          }
-          return k.tag === selector;
+          return checkMatch(k, selector);
         });
         memo[selector] = objectIntersection(_.map(instances, function (i) { return i.css; }));
         return memo;
       }, {});
   }
 
-  function renderStylesheet(snode, path) {
-    var result = "",
-      hasAttrs = false,
-      block    = path + " {\n",
-      attr,
-      i,
-      c,
-      seen     = {},
-      classy   = function (snode) {
-        var x = snode.tag;
-        if (snode.id) {
-          x = "#" + snode.id;
-        } else if (snode.klass) {
-          x += "." + snode.klass.split(' ').join('.');
-        }
-        return x;
-      },
-      relative = function (snode, path) {
-        return snode.id ? classy(snode) : path + ' > ' + classy(snode);
-      };
+  function renderStyle(selector, properties) {
+    console.log(selector + ' {');
+    _.each(properties, function (val, key) {
+      console.log("\t" + key + ': ' + val + ';');
+    });
+    console.log('}');
+  }
 
-    for (attr in snode.css) {
-      if (snode.css.hasOwnProperty(attr)) {
-        block += "\t" + attr + ': ' + snode.css[attr] + ";\n";
-        hasAttrs = true;
-      }
-    }
-    block += "}\n\n";
-    if (hasAttrs) {
-      result += block;
-    }
-
-    for (i = 0; i < snode.children.length; i++) {
-      c = relative(snode.children[i], path);
-      if (!seen.hasOwnProperty(c)) {
-        seen[c] = true;
-        result += renderStylesheet(snode.children[i], c);
-      }
-    }
-    return result;
+  function selectorPropertyCount(consolidation) {
+    return _.map(consolidation, function (properties, tag) {
+      var ret = {};
+      ret[tag] = _.keys(properties).length;
+      return ret;
+    });
   }
 
   function onScriptsLoaded() {
     console.log("Lifting heritable styles...");
     var lifted = liftHeritable(computedCssTree($('body'))),
-      tagWeights;
+      primeSelector,
+      consolidated,
+      processed = [],
+      i;
     console.log("Stripping default styles...");
     stripDefaultStyles(lifted);
 
-    tagWeights = _.map(styleConsolidations(lifted), function (properties, tag) {
-      var ret = {};
-      ret[tag] = _.keys(properties).length;
-      return ret;
-    });
-    console.log(JSON.stringify(tagWeights));
+    for (i = 0; i < 2; i++) {
+      consolidated = styleConsolidations(lifted);
+      primeSelector = _.keys(_.sortBy(selectorPropertyCount(consolidated), function (choice) {
+        return -(_.values(choice)[0]);
+      })[0])[0];
+      renderStyle(primeSelector, consolidated[primeSelector]);
+      processed.push(primeSelector);
+      _.each(select(lifted,
+        function (node) {
+          return checkMatch(node, primeSelector);
+        }),
+        function (choice) {
+          console.log(JSON.stringify(choice));
+        });
+    }
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
