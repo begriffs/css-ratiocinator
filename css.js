@@ -162,7 +162,7 @@
         return false;
       }
       if (selector[0] === '.' && node.klass) {
-        classRegexp = '\b' + selector.substring(1) + '\b';
+        classRegexp = new RegExp('\\b' + selector.substring(1) + '\\b');
         return node.klass.match(classRegexp);
       }
       return node.tag === selector;
@@ -179,11 +179,13 @@
   }
 
   function renderStyle(selector, properties) {
-    console.log(selector + ' {');
-    _.each(properties, function (val, key) {
-      console.log("\t" + key + ': ' + val + ';');
-    });
-    console.log('}');
+    if (!_.isEmpty(properties)) {
+      console.log(selector + ' {');
+      _.each(properties, function (val, key) {
+        console.log("\t" + key + ': ' + val + ';');
+      });
+      console.log('}');
+    }
   }
 
   function selectorPropertyCount(consolidation) {
@@ -207,7 +209,6 @@
     var lifted = liftHeritable(computedCssTree($('body'))),
       primeSelector,
       consolidated,
-      processed = [],
       i,
       n = selectorsUsed(lifted).length;
     console.log("Stripping default styles...");
@@ -219,7 +220,6 @@
         return -(_.values(choice)[0]);
       })[0])[0];
       renderStyle(primeSelector, consolidated[primeSelector]);
-      processed.push(primeSelector);
       lifted = removeStyleFromSelected(lifted, primeSelector, consolidated[primeSelector]);
     }
   }
