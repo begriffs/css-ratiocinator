@@ -103,10 +103,10 @@
   }
 
   function stripDefaultStyles(node) {
-    var defaults = { background: 'rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box',
-      border: '0px none rgb(0, 0, 0)', bottom: 'auto', clear: 'none', clip: 'auto', cursor: 'auto',
+    var defaults = { background: 'none',
+      border: 'none', bottom: 'auto', clear: 'none', clip: 'auto', cursor: 'auto',
       direction: 'ltr', fill: '#000000', filter: 'none', float: 'none', kerning: '0', left: 'auto',
-      mask: 'none', opacity: "1", outline: 'rgb(0, 0, 0) none 0px', overflow: 'visible', position: 'static',
+      mask: 'none', opacity: "1", outline: 'none', overflow: 'visible', position: 'static',
       resize: 'none', right: 'auto', stroke: 'none', top: 'auto', zoom: '1'};
 
     _.each(_.keys(defaults), function (def) {
