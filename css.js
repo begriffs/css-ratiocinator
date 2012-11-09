@@ -102,12 +102,47 @@
     };
   }
 
+  function defaultDisplayForTag(tag) {
+    return {
+      A: 'inline', ABBR: 'inline', ADDRESS: 'block', AREA: 'none',
+      ARTICLE: 'block', ASIDE: 'block', AUDIO: 'inline', B: 'inline',
+      BASE: 'inline', BB: 'inline', BDI: 'inline', BDO: 'inline', BLOCKQUOTE:
+      'block', BODY: 'block', BR: 'inline', BUTTON: 'inline-block', CANVAS:
+      'inline', CAPTION: 'table-caption', CITE: 'inline', CODE: 'inline',
+      COMMAND: 'inline', DATA: 'inline', DATAGRID: 'inline', DATALIST:
+      'none', DD: 'block', DEL: 'inline', DETAILS: 'block', DFN: 'inline',
+      DIV: 'block', DL: 'block', DT: 'block', EM: 'inline', EMBED: 'inline',
+      EVENTSOURCE: 'inline', FIELDSET: 'block', FIGCAPTION: 'block',
+      FIGURE: 'block', FOOTER: 'block', FORM: 'block', H1: 'block', H2:
+      'block', H3: 'block', H4: 'block', H5: 'block', H6: 'block', HEADER:
+      'block', HGROUP: 'block', HR: 'block', I: 'inline', IFRAME: 'inline',
+      IMG: 'inline-block', INPUT: 'inline-block', INS: 'inline', KBD:
+      'inline', KEYGEN: 'inline-block', LABEL: 'inline', LEGEND: 'block',
+      LI: 'list-item', LINK: 'none', MAP: 'inline', MARK: 'inline', MENU:
+      'block', META: 'none', METER: 'inline-block', NAV: 'block', NOSCRIPT:
+      'inline', OBJECT: 'inline', OL: 'block', OPTGROUP: 'inline', OPTION:
+      'inline', OUTPUT: 'inline', P: 'block', PARAM: 'none', PRE: 'block',
+      PROGRESS: 'inline-block', Q: 'inline', RP: 'inline', RT: 'inline',
+      RUBY: 'inline', S: 'inline', SAMP: 'inline', SCRIPT: 'none', SECTION:
+      'block', SELECT: 'inline-block', SMALL: 'inline', SOURCE: 'inline',
+      SPAN: 'inline', STRONG: 'inline', STYLE: 'none', SUB: 'inline',
+      SUMMARY: 'block', SUP: 'inline', TABLE: 'table', TBODY: 'table-row-group',
+      TD: 'table-cell', TEXTAREA: 'inline-block', TFOOT: 'table-footer-group',
+      TH: 'table-cell', THEAD: 'table-header-group', TIME: 'inline', TR:
+      'table-row', TRACK: 'inline', U: 'inline', UL: 'block', VAR: 'inline',
+      VIDEO: 'inline'}[tag];
+  }
+
   function stripDefaultStyles(node) {
     var defaults = { background: 'rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box',
       border: 'none', bottom: 'auto', clear: 'none', clip: 'auto', cursor: 'auto',
       direction: 'ltr', fill: '#000000', filter: 'none', float: 'none', kerning: '0', left: 'auto',
       mask: 'none', opacity: "1", outline: 'none', overflow: 'visible', position: 'static',
       resize: 'none', right: 'auto', stroke: 'none', top: 'auto', zoom: '1'};
+
+    if (defaultDisplayForTag(node.tag) === node.css['display']) {
+      delete node.css['display'];
+    }
 
     _.each(_.keys(defaults), function (def) {
       var prop = node.css[def];
