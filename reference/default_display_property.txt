@@ -38,6 +38,7 @@ EVENTSOURCE  inline
 FIELDSET     block
 FIGCAPTION   block
 FIGURE       block
+FONT         inline
 FOOTER       block
 FORM         block
 H1           block
