@@ -263,10 +263,10 @@
   // Load jQuery and underscore then begin the fun.
   console.log("Loading required external scripts...");
   script        = document.createElement("script");
-  script.src    = "//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js";
+  script.src    = "https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js";
   script.onload = function () {
     jQuery.getScript(
-      '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js',
       onScriptsLoaded
     );
   };
