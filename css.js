@@ -138,7 +138,7 @@
       border: 'none', bottom: 'auto', clear: 'none', clip: 'auto', cursor: 'auto',
       direction: 'ltr', fill: '#000000', filter: 'none', float: 'none', kerning: '0', left: 'auto',
       mask: 'none', opacity: "1", outline: 'none', overflow: 'visible', position: 'static',
-      resize: 'none', right: 'auto', stroke: 'none', top: 'auto', zoom: '1'};
+      resize: 'none', right: 'auto', stroke: 'none', top: 'auto', zoom: '1', height: 'auto', width: 'auto'};
 
     if (defaultDisplayForTag(node.tag) === node.css['display']) {
       delete node.css['display'];
