@@ -239,24 +239,30 @@
     })(node);
   }
 
-  function onScriptsLoaded() {
-    console.log("Lifting heritable styles...");
-    var lifted = liftHeritable(computedCssTree($('body'))),
-      primeSelector,
-      consolidated,
-      i,
-      n = selectorsUsed(lifted).length;
-    console.log("Stripping default styles...");
-    stripDefaultStyles(lifted);
-
+  function consolidateSelectors(cssTree, allowedSelectors) {
+    var consolidated, i, n = allowedSelectors.length, primeSelector;
     for (i = 0; i < n; i++) {
-      consolidated = styleConsolidations(lifted);
+      consolidated = filterKeys(styleConsolidations(cssTree), allowedSelectors);
       primeSelector = _.keys(_.sortBy(selectorPropertyCount(consolidated), function (choice) {
         return -(_.values(choice)[0]);
       })[0])[0];
       renderStyle(primeSelector, consolidated[primeSelector]);
-      lifted = removeStyleFromSelected(lifted, primeSelector, consolidated[primeSelector]);
+      cssTree = removeStyleFromSelected(cssTree, primeSelector, consolidated[primeSelector]);
     }
+    return cssTree;
+  }
+
+  function onScriptsLoaded() {
+    console.log("Lifting heritable styles...");
+    var lifted = liftHeritable(computedCssTree($('body'))),
+      selectors = selectorsUsed(lifted),
+      tags = _.filter(selectors, function(s) { return s[0] !== '.'; }),
+      classes = _.difference(selectors, tags);
+    console.log("Stripping default styles...");
+    stripDefaultStyles(lifted);
+    console.log("Consolidating styles...");
+    lifted = consolidateSelectors(lifted, tags);
+    lifted = consolidateSelectors(lifted, classes);
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
