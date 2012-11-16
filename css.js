@@ -150,6 +150,9 @@
           }
         });
       }
+      if (node.attr('id')) {
+        dict['#' + node.attr('id')] = true;
+      }
       node.children().each(function () { $.extend(dict, tagDict($(this))); });
       return dict;
     }
