@@ -192,10 +192,10 @@
   function importance(choice) {
     var weight = -(_.keys(choice.style).length * $('html').find(choice.selector).length);
     if (choice.selector[0] == '#') {
-      weight/=2; // penalize ids, try other methods first
+      weight/=4; // penalize ids, try other methods first
     }
     if (choice.selector.indexOf('>') > -1) {
-      weight++; // tie-break in favor of shallower selector
+      weight/=2; // tie-break in favor of shallower selector
     }
     return weight;
   }
