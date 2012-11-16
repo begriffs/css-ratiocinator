@@ -97,33 +97,113 @@
 
   function defaultDisplayForTag(tag) {
     return {
-      A: 'inline', ABBR: 'inline', ADDRESS: 'block', AREA: 'none',
-      ARTICLE: 'block', ASIDE: 'block', AUDIO: 'inline', B: 'inline',
-      BASE: 'inline', BB: 'inline', BDI: 'inline', BDO: 'inline', BLOCKQUOTE:
-      'block', BODY: 'block', BR: 'inline', BUTTON: 'inline-block', CANVAS:
-      'inline', CAPTION: 'table-caption', CITE: 'inline', CODE: 'inline',
-      COMMAND: 'inline', DATA: 'inline', DATAGRID: 'inline', DATALIST:
-      'none', DD: 'block', DEL: 'inline', DETAILS: 'block', DFN: 'inline',
-      DIV: 'block', DL: 'block', DT: 'block', EM: 'inline', EMBED: 'inline',
-      EVENTSOURCE: 'inline', FIELDSET: 'block', FIGCAPTION: 'block',
-      FIGURE: 'block', FOOTER: 'block', FORM: 'block', H1: 'block', H2:
-      'block', H3: 'block', H4: 'block', H5: 'block', H6: 'block', HEADER:
-      'block', HGROUP: 'block', HR: 'block', I: 'inline', IFRAME: 'inline',
-      IMG: 'inline-block', INPUT: 'inline-block', INS: 'inline', KBD:
-      'inline', KEYGEN: 'inline-block', LABEL: 'inline', LEGEND: 'block',
-      LI: 'list-item', LINK: 'none', MAP: 'inline', MARK: 'inline', MENU:
-      'block', META: 'none', METER: 'inline-block', NAV: 'block', NOSCRIPT:
-      'inline', OBJECT: 'inline', OL: 'block', OPTGROUP: 'inline', OPTION:
-      'inline', OUTPUT: 'inline', P: 'block', PARAM: 'none', PRE: 'block',
-      PROGRESS: 'inline-block', Q: 'inline', RP: 'inline', RT: 'inline',
-      RUBY: 'inline', S: 'inline', SAMP: 'inline', SCRIPT: 'none', SECTION:
-      'block', SELECT: 'inline-block', SMALL: 'inline', SOURCE: 'inline',
-      SPAN: 'inline', STRONG: 'inline', STYLE: 'none', SUB: 'inline',
-      SUMMARY: 'block', SUP: 'inline', TABLE: 'table', TBODY: 'table-row-group',
-      TD: 'table-cell', TEXTAREA: 'inline-block', TFOOT: 'table-footer-group',
-      TH: 'table-cell', THEAD: 'table-header-group', TIME: 'inline', TR:
-      'table-row', TRACK: 'inline', U: 'inline', UL: 'block', VAR: 'inline',
-      VIDEO: 'inline'}[tag];
+      A: 'inline',
+      ABBR: 'inline',
+      ADDRESS: 'block',
+      AREA: 'none',
+      ARTICLE: 'block',
+      ASIDE: 'block',
+      AUDIO: 'inline',
+      B: 'inline',
+      BASE: 'inline',
+      BB: 'inline',
+      BDI: 'inline',
+      BDO: 'inline',
+      BLOCKQUOTE: 'block',
+      BODY: 'block',
+      BR: 'inline',
+      BUTTON: 'inline-block',
+      CANVAS: 'inline',
+      CAPTION: 'table-caption',
+      CITE: 'inline',
+      CODE: 'inline',
+      COMMAND: 'inline',
+      DATA: 'inline',
+      DATAGRID: 'inline',
+      DATALIST: 'none',
+      DD: 'block',
+      DEL: 'inline',
+      DETAILS: 'block',
+      DFN: 'inline',
+      DIV: 'block',
+      DL: 'block',
+      DT: 'block',
+      EM: 'inline',
+      EMBED: 'inline',
+      EVENTSOURCE: 'inline',
+      FIELDSET: 'block',
+      FIGCAPTION: 'block',
+      FIGURE: 'block',
+      FOOTER: 'block',
+      FORM: 'block',
+      H1: 'block',
+      H2: 'block',
+      H3: 'block',
+      H4: 'block',
+      H5: 'block',
+      H6: 'block',
+      HEADER: 'block',
+      HGROUP: 'block',
+      HR: 'block',
+      I: 'inline',
+      IFRAME: 'inline',
+      IMG: 'inline-block',
+      INPUT: 'inline-block',
+      INS: 'inline',
+      KBD: 'inline',
+      KEYGEN: 'inline-block',
+      LABEL: 'inline',
+      LEGEND: 'block',
+      LI: 'list-item',
+      LINK: 'none',
+      MAP: 'inline',
+      MARK: 'inline',
+      MENU: 'block',
+      META: 'none',
+      METER: 'inline-block',
+      NAV: 'block',
+      NOSCRIPT: 'inline',
+      OBJECT: 'inline',
+      OL: 'block',
+      OPTGROUP: 'inline',
+      OPTION: 'inline',
+      OUTPUT: 'inline',
+      P: 'block',
+      PARAM: 'none',
+      PRE: 'block',
+      PROGRESS: 'inline-block',
+      Q: 'inline',
+      RP: 'inline',
+      RT: 'inline',
+      RUBY: 'inline',
+      S: 'inline',
+      SAMP: 'inline',
+      SCRIPT: 'none',
+      SECTION: 'block',
+      SELECT: 'inline-block',
+      SMALL: 'inline',
+      SOURCE: 'inline',
+      SPAN: 'inline',
+      STRONG: 'inline',
+      STYLE: 'none',
+      SUB: 'inline',
+      SUMMARY: 'block',
+      SUP: 'inline',
+      TABLE: 'table',
+      TBODY: 'table-row-group',
+      TD: 'table-cell',
+      TEXTAREA: 'inline-block',
+      TFOOT: 'table-footer-group',
+      TH: 'table-cell',
+      THEAD: 'table-header-group',
+      TIME: 'inline',
+      TR: 'table-row',
+      TRACK: 'inline',
+      U: 'inline',
+      UL: 'block',
+      VAR: 'inline',
+      VIDEO: 'inline'
+    }[tag];
   }
 
   function stripDefaultStyles(node) {
@@ -134,8 +214,8 @@
       resize: 'none', right: 'auto', stroke: 'none', top: 'auto', zoom: '1', height: 'auto', width: 'auto'};
 
     if (node.data('style')) {
-      if (defaultDisplayForTag(node.prop("tagName")) === node.data('style')['display']) {
-        delete node.data('style')['display'];
+      if (defaultDisplayForTag(node.prop("tagName")) === node.data('style').display) {
+        delete node.data('style').display;
       }
       _.each(_.keys(defaults), function (def) {
         var prop = node.data('style')[def];
@@ -149,34 +229,35 @@
     });
   }
 
-  function selectorsUsed(node) {
-    function tagDict(node) {
-      var dict = {};
-      dict[node.prop("tagName")] = true;
-      if (node.attr('class')) {
-        _.each(node.attr('class').split(/\s+/), function (klass) {
-          if (klass) {
-            dict['.' + klass] = true;
-          }
-        });
-      }
-      if (node.attr('id')) {
-        dict['#' + node.attr('id')] = true;
-      }
-      node.children().each(function () { $.extend(dict, tagDict($(this))); });
-      return dict;
+  function originatingSelectors(node, depth) {
+    var base = {}, ret = {};
+    base[node.prop("tagName")] = true;
+    if (node.attr('class')) {
+      _.each(node.attr('class').split(/\s+/), function (klass) {
+        if (klass) {
+          base['.' + klass] = true;
+        }
+      });
     }
-    return _.keys(tagDict(node));
-  }
+    if (node.attr('id')) {
+      base['#' + node.attr('id')] = true;
+    }
 
-  function nested(selectors) {
-    function isTag(selector) { return selector[0] !== '.' && selector[0] !== '#'; }
-    function notClass(selector) { return selector[0] !== '.'; }
-    return _.map(
-      cartesianProduct(_.filter(selectors, notClass), _.filter(selectors, isTag)),
-      function (pair) {
-        return pair[0] + " > " + pair[1];
+    if (depth < 2) {
+      return base;
+    }
+    node.children().each(function () {
+      var notId = function (selector) { return selector[0] !== '#'; },
+        kid_selectors = originatingSelectors($(this), depth - 1);
+      _.each(
+        _.map(
+          cartesianProduct(_.keys(base), _.filter(_.keys(kid_selectors), notId)),
+          function (tuple) { return tuple.join(' '); }
+        ),
+        function (selector) { ret[selector] = true; }
+      );
     });
+    return ret;
   }
 
   function renderStyle(selector, properties) {
@@ -190,18 +271,11 @@
   }
 
   function importance(choice) {
-    var weight = -(_.keys(choice.style).length * $('html').find(choice.selector).length);
-    if (choice.selector[0] == '#') {
-      weight/=4; // penalize ids, try other methods first
-    }
-    if (choice.selector.indexOf('>') > -1) {
-      weight/=2; // tie-break in favor of shallower selector
-    }
-    return weight;
+    return -(_.keys(choice.style).length * $('html').find(choice.selector).length);
   }
 
   function onScriptsLoaded() {
-    var root = $('body'), selectors, common, best;
+    var root = $('html'), selectors = {}, common, best;
 
     console.log("Computing styles...");
     $('*').each(function () {
@@ -214,11 +288,15 @@
     console.log("Stripping default styles...");
     stripDefaultStyles(root);
 
-    console.log("Consolidating styles...");
-    selectors = selectorsUsed(root);
-    selectors = selectors.concat(nested(selectors));
-    while(selectors.length > 0) {
-      common = _.map(selectors, function (sel) {
+    console.log("Consolidating styles...\n");
+    $('*').each(function () {
+      var depth;
+      for (depth = 1; depth <= 2; depth++) {
+        $.extend(selectors, originatingSelectors($(this), depth));
+      }
+    });
+    while (!_.isEmpty(selectors)) {
+      common = _.map(_.keys(selectors), function (sel) {
         return { selector: sel, style: commonStyle($('html').find(sel)) };
       });
       best   = _.sortBy(common, importance)[0];
@@ -226,8 +304,9 @@
       $(best.selector).each(function () {
         $(this).data('style', objectDifference($(this).data('style'), best.style));
       });
-      selectors = _.without(selectors, best.selector);
+      delete selectors[best.selector];
     }
+    console.log('/* Generated by CSS Ratiocinator */');
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////
