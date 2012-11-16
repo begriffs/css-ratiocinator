@@ -184,10 +184,10 @@
     selectors = selectorsUsed(root);
     while(selectors.length > 0) {
       common = _.map(selectors, function (sel) {
-        return { selector: sel, style: commonStyle(root.find(sel)) };
+        return { selector: sel, style: commonStyle($('html').find(sel)) };
       });
       best   = _.sortBy(common, function (choice) {
-        return -(_.keys(choice.style).length * root.find(choice.selector).length);
+        return -(_.keys(choice.style).length * $('html').find(choice.selector).length);
       })[0];
       renderStyle(best.selector, best.style);
       $(best.selector).each(function () {
