@@ -55,6 +55,16 @@
     return filterKeys(a, _.difference(_.keys(a), _.keys(b)));
   }
 
+  function cartesianProduct() {
+    return _.reduce(arguments, function (mtrx, vals) {
+      return _.reduce(vals, function (array, val) {
+        return array.concat(
+          _.map(mtrx, function (row) { return row.concat(val); })
+        );
+      }, []);
+    }, [[]]);
+  }
+
   function commonStyle(nodes) {
     return objectIntersection(_.map(nodes, function (k) { return $(k).data('style') || {}; }));
   }
@@ -159,6 +169,16 @@
     return _.keys(tagDict(node));
   }
 
+  function nested(selectors) {
+    function isTag(selector) { return selector[0] !== '.' && selector[0] !== '#'; }
+    function notClass(selector) { return selector[0] !== '.'; }
+    return _.map(
+      cartesianProduct(_.filter(selectors, notClass), _.filter(selectors, isTag)),
+      function (pair) {
+        return pair[0] + " > " + pair[1];
+    });
+  }
+
   function renderStyle(selector, properties) {
     if (!_.isEmpty(properties)) {
       console.log(selector + ' {');
@@ -167,6 +187,17 @@
       });
       console.log('}');
     }
+  }
+
+  function importance(choice) {
+    var weight = -(_.keys(choice.style).length * $('html').find(choice.selector).length);
+    if (choice.selector[0] == '#') {
+      weight/=2; // penalize ids, try other methods first
+    }
+    if (choice.selector.indexOf('>') > -1) {
+      weight++; // tie-break in favor of shallower selector
+    }
+    return weight;
   }
 
   function onScriptsLoaded() {
@@ -185,13 +216,12 @@
 
     console.log("Consolidating styles...");
     selectors = selectorsUsed(root);
+    selectors = selectors.concat(nested(selectors));
     while(selectors.length > 0) {
       common = _.map(selectors, function (sel) {
         return { selector: sel, style: commonStyle($('html').find(sel)) };
       });
-      best   = _.sortBy(common, function (choice) {
-        return -(_.keys(choice.style).length * $('html').find(choice.selector).length);
-      })[0];
+      best   = _.sortBy(common, importance)[0];
       renderStyle(best.selector, best.style);
       $(best.selector).each(function () {
         $(this).data('style', objectDifference($(this).data('style'), best.style));
