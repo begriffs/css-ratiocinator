@@ -207,8 +207,8 @@
   }
 
   function stripDefaultStyles(node) {
-    var defaults = { background: 'rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box',
-      border: 'none', bottom: 'auto', clear: 'none', clip: 'auto', cursor: 'auto',
+    var defaults = { background: "rgba\\(0, 0, 0, 0\\) none repeat scroll 0% 0% \/ auto padding-box border-box",
+      border: 'none', bottom: 'auto', clear: 'none', clip: 'auto', cursor: 'auto', margin: '^0px$', padding: '^0px$',
       direction: 'ltr', fill: '#000000', filter: 'none', float: 'none', kerning: '0', left: 'auto',
       mask: 'none', opacity: "1", outline: 'none', overflow: 'visible', position: 'static',
       resize: 'none', right: 'auto', stroke: 'none', top: 'auto', zoom: '1', height: 'auto', width: 'auto'};
@@ -219,7 +219,7 @@
       }
       _.each(_.keys(defaults), function (def) {
         var prop = node.data('style')[def];
-        if (prop && prop.indexOf(defaults[def]) > -1) {
+        if (prop && prop.match(new RegExp(defaults[def]))) {
           delete node.data('style')[def];
         }
       });
@@ -275,10 +275,10 @@
   }
 
   function onScriptsLoaded() {
-    var root = $('html'), selectors = {}, common, best;
+    var root = $('body'), selectors = {}, common, best;
 
     console.log("Computing styles...");
-    $('*').each(function () {
+    $('BODY, BODY *').each(function () {
       $(this).data('style', computedCssProperties(this));
     });
 
@@ -289,7 +289,7 @@
     stripDefaultStyles(root);
 
     console.log("Consolidating styles...\n");
-    $('*').each(function () {
+    $('BODY, BODY *').each(function () {
       var depth;
       for (depth = 1; depth <= 2; depth++) {
         $.extend(selectors, originatingSelectors($(this), depth));
