@@ -49,6 +49,17 @@ will extract styles for all elements with class `foo` first and then for
 
 ## Contributing
 
+This software is still very much in development. Pull requests are
+welcome; please consult the open [issues](css-ratiocinator/issues) for
+ideas. In general, the current todos fall into these groups:
+
+1. Create a test suite and write tests
+1. Try code on real sites and find errors
+1. Allow software to be run from the command line
+1. Accomodate states (e.g. :hover) and resizing
+1. Invent new ways to improve CSS
+1. Define measurements to assess improvement
+
 ## License
 
 The CSS Ratiocinator is Copyright © 2012 Joe Nelson. It is free
