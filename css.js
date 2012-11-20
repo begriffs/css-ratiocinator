@@ -86,13 +86,12 @@
       'caption-side', 'direction', 'elevation', 'empty-cells', 'line-height', 'list-style-image',
       'list-style-position', 'list-style-type', 'list-style', 'orphans', 'pitch-range',
       'pitch', 'quotes', 'richness', 'speak-header', 'speak-numeral', 'speak-punctuation',
-      'speak', 'speech-rate', 'stress', 'visibility', 'voice-family', 'volume', 'widows'],
-      common = filterKeys(commonStyle(node.children()), heritable);
+      'speak', 'speech-rate', 'stress', 'visibility', 'voice-family', 'volume', 'widows'];
 
-    node.children().each(function () {
-      $(this).data('style', objectDifference($(this).data('style'), common));
+    node.children().each(function (i, kid) {
+      var common = filterKeys(commonStyle([node, $(kid)]), heritable);
+      $(kid).data('style', objectDifference($(kid).data('style'), common));
     });
-    node.data('style', $.extend(node.data('style'), common));
   }
 
   function defaultDisplayForTag(tag) {
