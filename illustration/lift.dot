@@ -1,0 +1,32 @@
+digraph G {
+  rankdir=LR
+  node [shape=record];
+
+  subgraph cluster_after {
+    rank=2;
+    label="After";
+    color=lightgrey;
+    body_1 [label="body"];
+    div_1  [label="div | color: red"];
+    p_10   [label="p | font-weight: bold"];
+    p_11   [label="p"];
+
+    body_1 -> div_1;
+    div_1  -> p_10;
+    div_1  -> p_11;
+  }
+
+  subgraph cluster_before {
+    rank=1;
+    label="Before";
+    color=lightgrey;
+    body_0 [label="body"];
+    div_0  [label="div | color: red"];
+    p_00   [label="p | color: red | font-weight: bold"];
+    p_01   [label="p | color: red"];
+
+    body_0 -> div_0;
+    div_0  -> p_00;
+    div_0  -> p_01;
+  }
+}

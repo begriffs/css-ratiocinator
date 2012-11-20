@@ -1,0 +1,30 @@
+digraph G {
+  rankdir=LR
+  node [shape=record];
+
+  subgraph cluster_dom {
+    label="Consolidating";
+    color=lightgrey;
+    body  [label="body"];
+    div   [label=<
+      <table border="0">
+        <tr><td>div.foo</td></tr>
+        <tr><td><FONT color="red">color: black</FONT></td></tr>
+        <tr><td><FONT color="red">margin: 10px</FONT></td></tr>
+      </table>
+    >]
+    aside [label=<
+      <table border="0">
+        <tr><td>aside.foo</td></tr>
+        <tr><td><FONT color="red">color: black</FONT></td></tr>
+        <tr><td><FONT color="blue">background: #AAA</FONT></td></tr>
+        <tr><td><FONT color="blue">border: 1px solid black</FONT></td></tr>
+        <tr><td><FONT color="blue">border-radius: 5px</FONT></td></tr>
+        <tr><td><FONT color="red">margin: 10px</FONT></td></tr>
+      </table>
+    >]
+
+    body -> div;
+    body -> aside;
+  }
+}
