@@ -18,7 +18,6 @@ Runs best in [Google Chrome](//www.google.com/chrome).
 1. Open the developer tools pane (by pressing ⌥⌘I)
 1. Select the JavaScript Console<br/>![JS Console](css-ratiocinator/raw/master/illustration/console.png "JS Console")
 1. Paste the contents of `css.js` into the console and press enter.
-1. If an error occurs, repeat the previous step. ([Issue #18](https://github.com/begriffs/css-ratiocinator/issues/18))
 1. The new CSS will appear in the console.
 1. (optionally) Feed output through [sass-convert](http://blog.derekperez.com/post/816063805/move-you-existing-stylebase-over-to-sass-or-scss)
 
