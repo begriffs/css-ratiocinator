@@ -22,6 +22,44 @@ Runs best in [Google Chrome](//www.google.com/chrome).
 1. The new CSS will appear in the console.
 1. (optionally) Feed output through [sass-convert](http://blog.derekperez.com/post/816063805/move-you-existing-stylebase-over-to-sass-or-scss)
 
+## Faq
+
+<dl>
+  <dt>Does this thing clobber or remove my styles?</dt>
+  <dd>No. If your page renders differently after using
+  Ratiocinator-generated style then that's a bug. This software may move
+  styles around during the assessment stage of its algorithm but the
+  end result respects the original styles you have created. Note that it
+  may achieve these styles using a different combination of selectors
+  and inheritance than your original CSS did.</dd>
+
+  <dt>Can it work on a whole site (multiple pages)?</dt>
+  <dd>In principle yes, but not yet. The strategy will be to ajax the
+  pages together into a single page with multiple body tags. This long
+  assembled page will provide enough data to the Ratiocinator to create
+  a new style that respects everything your site does.</dd>
+
+  <dt>Pasting the code into the console is weird, is there a better way?</dt>
+  <dd>Yes, it is weird and there will be a better way. What you see
+  so far is an experiment to try the automated refactoring ideas.
+  Ultimately I imagine creating a command-line tool that accepts urls
+  and outputs to stdout.</dd>
+
+  <dt>How is this different from other CSS tidying programs?</dt>
+  <dd>The Ratiocinator does not read your CSS files at all, it ignores
+  them completely. It relies on the live DOM to infer what your styles
+  want to accomplish. The thoroughness of the results you get are based
+  on the quality and completeness of the example DOM that you provide the
+  program.</dd>
+
+  <dt>Does it capture styles for the "sad path?"</dt>
+  <dd>It captures styles for whatever you show it, so if you have styles
+  for errors or form validation problems or various element states
+  then you'll need to include the markup to demonstrate them. The most
+  effective input is a living style guide for your site. You do use a
+  style guide, don't you?</dd>
+</dl>
+
 ## Mechanism
 
 The Ratiocinator proceeds in two phases: assessment and consolidation.
