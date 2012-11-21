@@ -1,6 +1,6 @@
 /*jslint browser: true, indent: 2, nomen: true, plusplus: true */
 /*global _: true */
-/*global $: true */
+/*global $j: true */
 /*global jQuery: true */
 /*global console: true */
 
@@ -70,11 +70,11 @@
   }
 
   function commonStyle(nodes) {
-    return objectIntersection(_.map(nodes, function (k) { return $(k).data('style') || {}; }));
+    return objectIntersection(_.map(nodes, function (k) { return $j(k).data('style') || {}; }));
   }
 
   function liftHeritable(node) {
-    node.children().each(function () { liftHeritable($(this)); });
+    node.children().each(function () { liftHeritable($j(this)); });
 
     var heritable = [
       'cursor', 'font-family', 'font-weight', 'font-stretch', 'font-style',
@@ -93,8 +93,8 @@
       'speak', 'speech-rate', 'stress', 'visibility', 'voice-family', 'volume', 'widows'];
 
     node.children().each(function (i, kid) {
-      var common = filterKeys(commonStyle([node, $(kid)]), heritable);
-      $(kid).data('style', objectDifference($(kid).data('style'), common));
+      var common = filterKeys(commonStyle([node, $j(kid)]), heritable);
+      $j(kid).data('style', objectDifference($j(kid).data('style'), common));
     });
   }
 
@@ -228,7 +228,7 @@
       });
     }
     node.children().each(function () {
-      stripDefaultStyles($(this));
+      stripDefaultStyles($j(this));
     });
   }
 
@@ -251,7 +251,7 @@
     }
     node.children().each(function () {
       var notId = function (selector) { return selector[0] !== '#'; },
-        kid_selectors = originatingSelectors($(this), depth - 1);
+        kid_selectors = originatingSelectors($j(this), depth - 1);
       _.each(
         _.map(
           cartesianProduct(_.keys(base), _.filter(_.keys(kid_selectors), notId)),
@@ -274,15 +274,15 @@
   }
 
   function importance(choice) {
-    return -(_.keys(choice.style).length * $('html').find(choice.selector).length);
+    return -(_.keys(choice.style).length * $j('html').find(choice.selector).length);
   }
 
   function onScriptsLoaded() {
-    var root = $('body'), selectors = {}, common, best;
+    var root = $j('body'), selectors = {}, common, best;
 
     console.log("Computing styles...");
-    $('BODY, BODY *').each(function () {
-      $(this).data('style', computedCssProperties(this));
+    $j('BODY, BODY *').each(function () {
+      $j(this).data('style', computedCssProperties(this));
     });
 
     console.log("Lifting heritable styles...");
@@ -292,20 +292,20 @@
     stripDefaultStyles(root);
 
     console.log("Consolidating styles...\n");
-    $('BODY, BODY *').each(function () {
+    $j('BODY, BODY *').each(function () {
       var depth;
       for (depth = 1; depth <= 2; depth++) {
-        $.extend(selectors, originatingSelectors($(this), depth));
+        $j.extend(selectors, originatingSelectors($j(this), depth));
       }
     });
     while (!_.isEmpty(selectors)) {
       common = _.map(_.keys(selectors), function (sel) {
-        return { selector: sel, style: commonStyle($('html').find(sel)) };
+        return { selector: sel, style: commonStyle($j('html').find(sel)) };
       });
       best   = _.sortBy(common, importance)[0];
       renderStyle(best.selector, best.style);
-      $(best.selector).each(function () {
-        $(this).data('style', objectDifference($(this).data('style'), best.style));
+      $j(best.selector).each(function () {
+        $j(this).data('style', objectDifference($j(this).data('style'), best.style));
       });
       delete selectors[best.selector];
     }
@@ -318,6 +318,7 @@
   script        = document.createElement("script");
   script.src    = "https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js";
   script.onload = function () {
+    window.$j = jQuery.noConflict();
     jQuery.getScript(
       'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js',
       onScriptsLoaded
