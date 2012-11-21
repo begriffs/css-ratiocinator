@@ -22,10 +22,14 @@
   }
 
   function filterKeys(obj, valid_keys) {
-    return _.intersection(_.keys(obj), valid_keys).reduce(function (result, key) {
-      result[key] = obj[key];
-      return result;
-    }, {});
+    return _.reduce(
+      _.intersection(_.keys(obj), valid_keys),
+      function (result, key) {
+        result[key] = obj[key];
+        return result;
+      },
+      {}
+    );
   }
 
   function objectIntersection(array) {
