@@ -232,6 +232,15 @@
     });
   }
 
+  // Heritable styles with default values are tricky. Strip them
+  // from the root node only.
+  function stripRootDefaultStyles(root) {
+    var defaults = {speak: 'normal', visibility: 'visible', orphans: 2, widows: 2};
+    root.data('style',
+      objectDifference(root.data('style'), defaults)
+    );
+  }
+
   function originatingSelectors(node, depth) {
     var base = {}, ret = {};
     base[node.prop("tagName")] = true;
@@ -290,6 +299,7 @@
 
     console.log("Stripping default styles...");
     stripDefaultStyles(root);
+    stripRootDefaultStyles(root);
 
     console.log("Consolidating styles...\n");
     $j('BODY, BODY *').each(function () {
