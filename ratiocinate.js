@@ -17,8 +17,8 @@
         console.log('  (Perhaps you meant "http://' + url + '")');
       }
     } else {
-      page.injectJs("lib/jquery-1.8.2.js");
-      page.injectJs("lib/underscore-1.4.2.js");
+      page.injectJs("vendor/jquery-1.8.2.js");
+      page.injectJs("vendor/underscore-1.4.2.js");
       page.injectJs('lib/css.js');
 
       page.evaluate(function () {
