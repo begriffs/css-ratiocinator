@@ -1,5 +1,5 @@
-/*jslint browser: true, indent: 2 */
-/*global phantom, require, console, $, simplerStyle */
+/*jslint browser: true, indent: 2, nomen: true */
+/*global phantom, require, console, $, simplerStyle, _ */
 (function () {
   "use strict";
 
@@ -21,9 +21,11 @@
               phantom.exit();
             }
             style = page.evaluate(function () {
-              return window.simplerStyle();
+              var styles = window.simplerStyle();
+              _.each(_.pairs(styles), function (pair) {
+                window.renderStyle(pair[0], pair[1]);
+              });
             });
-            console.log(JSON.stringify(style));
             phantom.exit();
           })
       });
