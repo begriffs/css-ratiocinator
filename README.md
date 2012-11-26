@@ -12,13 +12,13 @@ provides a harmonious new beginning.
 
 ## Usage
 
-Runs best in [Google Chrome](//www.google.com/chrome).
+This program runs from the command line using the PhantomJS headless
+browser.
 
-1. Visit your page in Chrome.
-1. Open the developer tools pane (by pressing ⌥⌘I)
-1. Select the JavaScript Console<br/>![JS Console](css-ratiocinator/raw/master/illustration/console.png "JS Console")
-1. Paste the contents of `css.js` into the console and press enter.
-1. The new CSS will appear in the console.
+1. Install [PhantomJS](http://phantomjs.org/)
+1. Clone this repo
+1. In the cloned directory, run `phantomjs ratiocinate.js [URL]`
+1. The new CSS will appear.
 1. (optionally) Feed output through [sass-convert](http://blog.derekperez.com/post/816063805/move-you-existing-stylebase-over-to-sass-or-scss)
 
 ## Faq
@@ -37,12 +37,6 @@ Runs best in [Google Chrome](//www.google.com/chrome).
   pages together into a single page with multiple body tags. This long
   assembled page will provide enough data to the Ratiocinator to create
   a new style that respects everything your site does.</dd>
-
-  <dt>Pasting the code into the console is weird, is there a better way?</dt>
-  <dd>Yes, it is weird and there will be a better way. What you see
-  so far is an experiment to try the automated refactoring ideas.
-  Ultimately I imagine creating a command-line tool that accepts urls
-  and outputs to stdout.</dd>
 
   <dt>How is this different from other CSS tidying programs?</dt>
   <dd>The Ratiocinator does not read your CSS files at all, it ignores
@@ -66,7 +60,9 @@ During assessment it determines which nodes will need which styles,
 accounting for browser defaults and cascade rules. The browser provides
 a full list of computed style for every node, and our first step is to
 prune redundancies from cascaded style in a depth-first process called
-"lifting." ![Lifting](css-ratiocinator/raw/master/illustration/lift.png "Lifting")
+"lifting."
+
+![Lifting](css-ratiocinator/raw/master/illustration/lift.png "Lifting")
 
 The last step in assessment is stripping default styles. The final
 style needn't specify CSS defaults, so we remove them prior to the
@@ -92,7 +88,6 @@ ideas. In general, the current todos fall into these groups:
 
 1. Create a test suite and write tests
 1. Try code on real sites and find errors
-1. Allow software to be run from the command line
 1. Accommodate states (e.g. :hover) and resizing
 1. Invent new ways to improve CSS
 1. Define measurements to assess improvement
