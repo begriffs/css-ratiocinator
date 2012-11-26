@@ -11,16 +11,23 @@
     console.log(msg);
   };
   page.open(url, function (status) {
-    page.injectJs("lib/jquery-1.8.2.js");
-    page.injectJs("lib/underscore-1.4.2.js");
-    page.injectJs('lib/css.js');
+    if (status !== 'success') {
+      console.log('Failed to load "' + url + '"');
+      if (!url.match(/^http/)) {
+        console.log('  (Perhaps you meant "http://' + url + '")');
+      }
+    } else {
+      page.injectJs("lib/jquery-1.8.2.js");
+      page.injectJs("lib/underscore-1.4.2.js");
+      page.injectJs('lib/css.js');
 
-    page.evaluate(function () {
-      var styles = window.simplerStyle();
-      _.each(_.pairs(styles), function (pair) {
-        window.renderStyle(pair[0], pair[1]);
+      page.evaluate(function () {
+        var styles = window.simplerStyle();
+        _.each(_.pairs(styles), function (pair) {
+          window.renderStyle(pair[0], pair[1]);
+        });
       });
-    });
+    }
     phantom.exit();
   });
 }());
