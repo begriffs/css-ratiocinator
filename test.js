@@ -46,7 +46,6 @@
 
       describe(scenario, function () {
         it("should see expected style", function () {
-          // clone to break the closure-in-a-loop problem
           expect(expected).toEqual(calculated);
         });
       });
