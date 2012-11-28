@@ -82,15 +82,17 @@ will extract styles for all elements with class `foo` first and then for
 
 ## Contributing
 
-This software is still very much in development. Pull requests are
-welcome; please consult the open [issues](css-ratiocinator/issues) for
-ideas. In general, the current todos fall into these groups:
+It is currently very easy to contribute &mdash; all I want is your
+complaints. Find something that the Ratiocinator does wrong and tell me.
+The best complaints are very specific, preferably made into a new test
+and submitted via a pull request. Luckily that's easy too:
 
-1. Create a test suite and write tests
-1. Try code on real sites and find errors
-1. Accommodate states (e.g. :hover) and resizing
-1. Invent new ways to improve CSS
-1. Define measurements to assess improvement
+1. Find some styles that the Ratiocinator is botching.
+1. Think of the smallest example that will illustrate the problem.
+1. Add a new test by copying `test/template.html` and filling in the blanks.
+1. Save your new test in the `test/` folder.
+1. Run `phantomjs test.js` and make sure it fails.
+1. Submit pull request.
 
 ## License
 
