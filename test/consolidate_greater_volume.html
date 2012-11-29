@@ -1,0 +1,42 @@
+<html>
+<head>
+  <style type="text/css">
+    aside.foo {
+      color: red;
+      background: #AAA;
+      border: 1px solid black;
+      border-radius: 5px;
+      margin: 10px;
+    }
+    div.foo {
+      color: red;
+      margin: 10px;
+    }
+  </style>
+
+  <script type="text/javascript">
+    window.expectedStyle = {
+      'BODY': {
+        'color': 'rgb(0, 0, 0)',
+        'font-family': "'Times New Roman'",
+        'font-size': '16px',
+        'margin': '8px'
+      },
+      '.foo': {
+        'color': 'rgb(255, 0, 0)',
+        'margin': '10px',
+      },
+      'ASIDE': {
+        'background-color': 'rgb(170, 170, 170)',
+        'border-color': 'rgb(0, 0, 0)',
+        'border-style': 'solid',
+        'border-width': '1px',
+        'border-radius': '5px'
+      }
+    };
+  </script>
+</head>
+<body>
+  <div class="foo">I'm a div</div>
+  <aside class="foo">I'm an aside</aside>
+</body>
