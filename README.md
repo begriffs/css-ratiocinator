@@ -94,6 +94,14 @@ and submitted via a pull request. Luckily that's easy too:
 1. Run `phantomjs test.js` and make sure it fails.
 1. Submit pull request.
 
+There are two known open bugs. Any contributions toward solving them
+are also welcome.
+
+1. Widths, heights, margins, etc are locked at particular pixel values
+   ([Issue #8](https://github.com/begriffs/css-ratiocinator/issues/8))
+1. Generated CSS doesn't yet include states like :hover or :visited
+   ([Issue #7](https://github.com/begriffs/css-ratiocinator/issues/7))
+
 ## License
 
 The CSS Ratiocinator is Copyright © 2012 Joe Nelson. It is free
