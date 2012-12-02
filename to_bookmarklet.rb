@@ -4,25 +4,27 @@ require 'uri'
 
 path = 'extras/bookmarklet.js'
 
-if File.exists? path
-  js = File.read path
+def cleanUpAndPrint js
+  js = js.strip
+         .gsub(/\n/,'')
+         .gsub(/\s{2,}/,'')
+         .gsub( /\/\*.+?\*\/|\/\/.*(?=[\n\r])/, '' )
+         .gsub( /s{\t}{ }gm/, '' )
+         .gsub( /s{ +}{ }gm/, '' )
+         .gsub( /s{^\s+}{}gm/, '' )
+         .gsub( /s{\s+$}{}gm/, '' )
+         .gsub( /s{\n}{}gm/, '' )
+
+
+  escaped_js = URI.escape(js)
+  print "javascript:(function(){#{escaped_js}}());"
 end
 
-js = js.strip.gsub(/\n/,'').gsub(/\s{2,}/,'')
+if File.exists? path
+  js = File.read path
+  cleanUpAndPrint(js)
+else
+  puts 'Could not load extras/bookmarklet.js'
+  return
+end
 
-# Kill comments.
-js.gsub!( /\/\*.+?\*\/|\/\/.*(?=[\n\r])/, '' )
-# Tabs to spaces
-js.gsub!( /s{\t}{ }gm/, '' )
-# Space runs to one space
-js.gsub!( /s{ +}{ }gm/, '' )         
-# Kill line-leading whitespace
-js.gsub!( /s{^\s+}{}gm/, '' )        
-# Kill line-ending whitespace
-js.gsub!( /s{\s+$}{}gm/, '' )
-# Kill newlines
-js.gsub!( /s{\n}{}gm/, '' )
-
-
-js = URI.escape(js)
-print "javascript:(function(){#{js}}());"
