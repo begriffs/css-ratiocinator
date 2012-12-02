@@ -80,6 +80,12 @@ elements overall. The red has greater "volume." Hence the Ratiocinator
 will extract styles for all elements with class `foo` first and then for
 `aside` elements second.
 
+## Bookmarklet
+
+The Ratiocinator can also be run from your browser as a bookmarklet:
+
+    javascript:(function%20()%20%7Bvar%20script%20=%20document.createElement(%22script%22);script.src%20=%20%22https://raw.github.com/begriffs/css-ratiocinator/bookmarklet/extras/bookmarklet.js%22;document.getElementsByTagName(%22head%22)[0].appendChild(script);%7D());
+
 ## Contributing
 
 It is currently very easy to contribute &mdash; all I want is your
