@@ -24,7 +24,7 @@
       page.evaluate(function () {
         var styles = window.simplerStyle();
         _.each(_.pairs(styles), function (pair) {
-          window.renderStyle(pair[0], pair[1]);
+          console.log(window.renderStyle(pair[0], pair[1]));
         });
       });
     }
