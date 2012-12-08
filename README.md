@@ -12,7 +12,7 @@ provides a harmonious new beginning.
 
 ## Usage
 
-This program runs from the command line using the PhantomJS headless
+This program runs from the **command line** using the PhantomJS headless
 browser.
 
 1. Install [PhantomJS](http://phantomjs.org/)
@@ -20,6 +20,12 @@ browser.
 1. In the cloned directory, run `phantomjs ratiocinate.js [URL]`
 1. The new CSS will appear.
 1. (optionally) Feed output through [sass-convert](http://blog.derekperez.com/post/816063805/move-you-existing-stylebase-over-to-sass-or-scss)
+
+It also runs in the browser as a **bookmarklet**. Run the following to
+split the browser window with the original page on the left and the
+Ratiocinated version on the right.
+
+    javascript:(function%20()%20%7Bvar%20script%20=%20document.createElement(%22script%22);script.src%20=%20%22https://raw.github.com/begriffs/css-ratiocinator/master/extras/bookmarklet.js%22;document.getElementsByTagName(%22head%22)[0].appendChild(script);%7D());
 
 ## Faq
 
@@ -79,12 +85,6 @@ are more blue items than red in element `aside.foo`, there are more red
 elements overall. The red has greater "volume." Hence the Ratiocinator
 will extract styles for all elements with class `foo` first and then for
 `aside` elements second.
-
-## Bookmarklet
-
-The Ratiocinator can also be run from your browser as a bookmarklet:
-
-    javascript:(function%20()%20%7Bvar%20script%20=%20document.createElement(%22script%22);script.src%20=%20%22https://raw.github.com/begriffs/css-ratiocinator/bookmarklet/extras/bookmarklet.js%22;document.getElementsByTagName(%22head%22)[0].appendChild(script);%7D());
 
 ## Contributing
 
