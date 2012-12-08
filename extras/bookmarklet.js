@@ -11,7 +11,7 @@
     iframe_src.attr('id', 'ratio_src');
     iframe_src.attr('style', 'position: absolute; top: 0; left: 0; height: 100%; width: 50%; border-right: 1px solid black;');
     iframe_src.load(function () {
-      var styles = window.simplerStyle($(window.frames.ratio_dst.document.body)),
+      var styles = window.simplerStyle($(window.frames.ratio_src.document.body)),
         style_tag = $('<style type="text/css" media="all" />'),
         css = '';
       window.frames.ratio_dst.document.body.innerHTML = window.frames.ratio_src.document.body.innerHTML;
