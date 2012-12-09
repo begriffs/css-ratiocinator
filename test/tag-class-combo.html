@@ -1,0 +1,47 @@
+<html>
+<head>
+  <style type="text/css">
+    div {
+      color: red;
+    }
+    .foo {
+      text-decoration: underline;
+    }
+    div.foo {
+      font-style: italic;
+    }
+  </style>
+
+  <script type="text/javascript">
+    window.expectedStyle = {
+      'BODY': {
+        'color': 'rgb(0, 0, 0)',
+        'font-family': "'Times New Roman'",
+        'font-size': '16px',
+        'margin': '8px',
+        'height': '284px',
+        'width': '384px'
+      },
+      'DIV': {
+        'color': 'rgb(255, 0, 0)',
+        'height': '18px',
+        'width': '384px'
+      },
+      '.foo': {
+        'text-decoration': 'underline'
+      },
+      'SECTION': {
+        'height': '18px',
+        'width': '384px'
+      },
+      'DIV.foo': {
+        'font-style': 'italic'
+      }
+    };
+  </script>
+</head>
+<body>
+  <div>Hello</div>
+  <section class="foo">Hi</section>
+  <div class="foo">Greetings</div>
+</body>
