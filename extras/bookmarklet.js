@@ -40,7 +40,7 @@
 
       function () {
         jQuery.getScript(
-          'https://raw.github.com/begriffs/css-ratiocinator/bookmarklet/lib/css.js',
+          'https://raw.github.com/begriffs/css-ratiocinator/master/lib/css.js',
           onScriptsLoaded
         );
       }
