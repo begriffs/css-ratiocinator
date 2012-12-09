@@ -7,7 +7,7 @@
     page = require('webpage').create(),
     url = system.args[1];
 
-  page.onConsoleMessage = function (msg, lineNum, sourceId) {
+  page.onConsoleMessage = function (msg) {
     console.log(msg);
   };
   page.open(url, function (status) {
