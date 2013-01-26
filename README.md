@@ -12,8 +12,11 @@ provides a harmonious new beginning.
 
 ## Usage
 
-This program runs from the **command line** using the PhantomJS headless
-browser.
+The **easiest way** is to use the web interface
+[csstrashman.com](http://www.csstrashman.com).
+
+Alternatively, this program runs from the **command line** using the
+PhantomJS headless browser.
 
 1. Install [PhantomJS](http://phantomjs.org/)
 1. Clone this repo
@@ -21,9 +24,9 @@ browser.
 1. The new CSS will appear.
 1. (optionally) Feed output through [sass-convert](http://blog.derekperez.com/post/816063805/move-you-existing-stylebase-over-to-sass-or-scss)
 
-It also runs in the browser as a **bookmarklet**. Run the following to
-split the browser window with the original page on the left and the
-Ratiocinated version on the right.
+Finally, it runs in the browser as a **bookmarklet**. Execute the
+following to split the browser window with the original page on the left
+and the Ratiocinated version on the right.
 
     javascript:(function%20()%20%7Bvar%20script%20=%20document.createElement(%22script%22);script.src%20=%20%22https://raw.github.com/begriffs/css-ratiocinator/master/extras/bookmarklet.js%22;document.getElementsByTagName(%22head%22)[0].appendChild(script);%7D());
 
