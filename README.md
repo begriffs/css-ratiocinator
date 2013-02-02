@@ -20,7 +20,7 @@ PhantomJS headless browser.
 
 1. Install [PhantomJS](http://phantomjs.org/)
 1. Clone this repo
-1. In the cloned directory, run `phantomjs ratiocinate.js [URL]`
+1. In the cloned directory, run `phantomjs ratiocinate.js URL`
 1. The new CSS will appear.
 1. (optionally) Feed output through [sass-convert](http://blog.derekperez.com/post/816063805/move-you-existing-stylebase-over-to-sass-or-scss)
 
@@ -91,10 +91,10 @@ will extract styles for all elements with class `foo` first and then for
 
 ## Contributing
 
-It is currently very easy to contribute &mdash; all I want is your
-complaints. Find something that the Ratiocinator does wrong and tell me.
-The best complaints are very specific, preferably made into a new test
-and submitted via a pull request. Luckily that's easy too:
+It is currently very easy to contribute. Just find something that the
+Ratiocinator does wrong and tell me. The best complaints are very
+specific, preferably made into a new test and submitted via a pull
+request. Luckily that's easy too:
 
 1. Find some styles that the Ratiocinator is botching.
 1. Think of the smallest example that will illustrate the problem.
@@ -102,14 +102,6 @@ and submitted via a pull request. Luckily that's easy too:
 1. Save your new test in the `test/` folder.
 1. Run `phantomjs test.js` and make sure it fails.
 1. Submit pull request.
-
-There are two known open bugs. Any contributions toward solving them
-are also welcome.
-
-1. Widths, heights, margins, etc are locked at particular pixel values
-   ([Issue #8](https://github.com/begriffs/css-ratiocinator/issues/8))
-1. Generated CSS doesn't yet include states like :hover or :visited
-   ([Issue #7](https://github.com/begriffs/css-ratiocinator/issues/7))
 
 ## License
 
