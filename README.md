@@ -1,4 +1,4 @@
-![Logo](css-ratiocinator/raw/master/illustration/githubheader.png "Logo")
+![Logo](illustration/githubheader.png "Logo")
 
 The CSS Ratiocinator automatically refactors your CSS and generates a
 new stylesheet for your site. It works by examining your site's live DOM
@@ -71,7 +71,7 @@ a full list of computed style for every node, and our first step is to
 prune redundancies from cascaded style in a depth-first process called
 "lifting."
 
-![Lifting](css-ratiocinator/raw/master/illustration/lift.png "Lifting")
+![Lifting](illustration/lift.png "Lifting")
 
 The last step in assessment is stripping default styles. The final
 style needn't specify CSS defaults, so we remove them prior to the
@@ -80,7 +80,7 @@ consolidation phase.
 Next comes consolidation, where we find shared pieces of style
 throughout the cleaned DOM tree and extract them to CSS declarations.
 
-![Consolidating](css-ratiocinator/raw/master/illustration/consolidate.png "Consolidating")
+![Consolidating](illustration/consolidate.png "Consolidating")
 
 In the diagram above, the Ratiocinator will choose to output a
 declaration for the styles in red before those in blue. Although there
