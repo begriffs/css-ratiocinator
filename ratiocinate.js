@@ -5,7 +5,8 @@
 
   var system = require('system'),
     page = require('webpage').create(),
-    url = system.args[1];
+    url = system.args[1],
+    fonts;
 
   page.onConsoleMessage = function (msg) {
     console.log(msg);
@@ -23,6 +24,12 @@
 
       page.evaluate(function () {
         var styles = window.simplerStyle();
+
+        console.log("/* Begin computed CSS */");
+
+        fonts = window.fontDeclarations().join("\n\n");
+        if (fonts) { console.log(fonts + "\n"); }
+
         _.each(_.pairs(styles), function (pair) {
           console.log(window.renderStyle(pair[0], pair[1]));
         });
