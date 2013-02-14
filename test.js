@@ -4,7 +4,7 @@
   "use strict";
 
   phantom.injectJs('./vendor/underscore-1.4.2.js');
-  phantom.injectJs('./vendor/jasmine-1.2.0/jasmine.js');
+  phantom.injectJs('./vendor/jasmine-1.3.1/jasmine.js');
   phantom.injectJs('./vendor/phantom-jasmine/console-runner.js');
   jasmine.getEnv().addReporter(new jasmine.ConsoleReporter());
 
@@ -23,8 +23,12 @@
 
   function runTestsAfterScenariosLoaded() {
     if (scenariosLoaded === scenarios.length) {
+      var oldCallback = jasmine.getEnv().currentRunner().finishCallback;
+      jasmine.getEnv().currentRunner().finishCallback = function () {
+        oldCallback.apply(this, arguments);
+        phantom.exit();
+      };
       jasmine.getEnv().execute();
-      phantom.exit();
     }
   }
 
