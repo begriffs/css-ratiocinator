@@ -3,7 +3,7 @@
 (function () {
   'use strict';
 
-  var url, fonts,
+  var url,
     _               = require('./vendor/underscore-1.4.2.js'),
     args            = require('system').args.slice(1),
     resource        = require('./lib/resource.js'),
@@ -26,19 +26,38 @@
 
   // }}} parse arguments
 
-  resource.loadWithLibs(url, verbose, function (page) {
-    page.evaluate(function () {
-      var styles = CSS.simplerStyle();
+  resource.loadWithLibs(
+    url,
+    verbose,
+    function (page) {
+      var intervals = page.evaluate(function () { return CSS.mediaWidthIntervals(); }),
+        fonts = page.evaluate(function () { return CSS.fontDeclarations().join('\n\n'); }),
+        toGo = intervals.length,
+        combineIntervals = function () { },
+        addStyle = function (interval) {
+          return function (page) {
+            interval.style = page.evaluate(function () {
+              return CSS.simplerStyle();
+            });
+            toGo -= 1;
+            if (toGo < 1) {
+              combineIntervals();
+              phantom.exit();
+            }
+          };
+        },
+        i;
 
-      console.log('/* Begin computed CSS */');
-
-      fonts = CSS.fontDeclarations().join('\n\n');
       if (fonts) { console.log(fonts + '\n'); }
 
-      _.each(_.pairs(styles), function (pair) {
-        console.log(CSS.renderStyle(pair[0], pair[1]));
-      });
-    });
-    phantom.exit();
-  });
+      for (i = 0; i < intervals.length; i += 1) {
+        resource.loadWithLibs(
+          url,
+          false,
+          addStyle(intervals[i]),
+          intervals[i].sample
+        );
+      }
+    }
+  );
 }());
