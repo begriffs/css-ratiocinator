@@ -45,19 +45,18 @@
               phantom.exit();
             }
           };
-        },
-        i;
+        };
 
       if (fonts) { console.log(fonts + '\n'); }
 
-      for (i = 0; i < intervals.length; i += 1) {
+      _.each(intervals, function (interval, i) {
         resource.loadWithLibs(
           url,
           false,
-          addStyle(intervals[i]),
-          intervals[i].sample
+          addStyle(interval),
+          interval.sample
         );
-      }
+      });
     }
   );
 }());
