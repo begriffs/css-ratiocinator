@@ -8,15 +8,18 @@
     url = system.args[1],
     fonts;
 
+  // assume http if no protocol is specified
+  if (!url.match(/:\/\//)) {
+    console.log('Missing protocol, assuming http');
+    url = 'http://' + url;
+  }
+
   page.onConsoleMessage = function (msg) {
     console.log(msg);
   };
   page.open(url, function (status) {
     if (status !== 'success') {
       console.log('Failed to load "' + url + '"');
-      if (!url.match(/^http/)) {
-        console.log('  (Perhaps you meant "http://' + url + '")');
-      }
     } else {
       page.injectJs("vendor/jquery-1.8.2.js");
       page.injectJs("vendor/underscore-1.4.2.js");
