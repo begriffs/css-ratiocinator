@@ -31,7 +31,10 @@
   if (!url.match(/:\/\//)) {
     if (!fs.exists(url)) {
       url = 'http://' + url;
-      verbose && console.log('Missing protocol, assuming http');
+
+      if (verbose) {
+        console.log('Missing protocol, assuming http');
+      }
     } else if(verbose) {
       console.log('"' + url + '" exists locally, using that.');
       console.log('Prepend a protocol (e.g. http:// or https://) to override this behavior');
@@ -45,8 +48,8 @@
   };
 
   page.open(url, function (status) {
-    if (status !== 'success') {
-      verbose && console.log('Failed to load "' + url + '"');
+    if (status !== 'success' && verbose) {
+      console.log('Failed to load "' + url + '"');
     } else {
       page.injectJs("vendor/jquery-1.8.2.js");
       page.injectJs("vendor/underscore-1.4.2.js");
