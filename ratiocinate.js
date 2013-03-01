@@ -11,9 +11,14 @@
 
   // assume http if no protocol is specified
   // and we're not looking at a local file
-  if (!url.match(/:\/\//) && !fs.exists(url)) {
-    console.log('Missing protocol, assuming http');
-    url = 'http://' + url;
+  if (!url.match(/:\/\//)) {
+    if (!fs.exists(url)) {
+      console.log('Missing protocol, assuming http');
+      url = 'http://' + url;
+    } else {
+      console.log('"' + url + '" exists locally, using that.');
+      console.log('Prepend a protocol (e.g. http:// or https://) to override this behavior');
+    }
   }
 
   page.onConsoleMessage = function (msg) {
