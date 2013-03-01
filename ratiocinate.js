@@ -5,11 +5,13 @@
 
   var system = require('system'),
     page = require('webpage').create(),
+    fs = require('fs'),
     url = system.args[1],
     fonts;
 
   // assume http if no protocol is specified
-  if (!url.match(/:\/\//)) {
+  // and we're not looking at a local file
+  if (!url.match(/:\/\//) && !fs.exists(url)) {
     console.log('Missing protocol, assuming http');
     url = 'http://' + url;
   }
