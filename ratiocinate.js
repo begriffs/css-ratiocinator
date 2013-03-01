@@ -5,8 +5,21 @@
 
   var system = require('system'),
     page = require('webpage').create(),
+    fs = require('fs'),
     url = system.args[1],
     fonts;
+
+  // assume http if no protocol is specified
+  // and we're not looking at a local file
+  if (!url.match(/:\/\//)) {
+    if (!fs.exists(url)) {
+      console.log('Missing protocol, assuming http');
+      url = 'http://' + url;
+    } else {
+      console.log('"' + url + '" exists locally, using that.');
+      console.log('Prepend a protocol (e.g. http:// or https://) to override this behavior');
+    }
+  }
 
   page.onConsoleMessage = function (msg) {
     console.log(msg);
@@ -14,9 +27,6 @@
   page.open(url, function (status) {
     if (status !== 'success') {
       console.log('Failed to load "' + url + '"');
-      if (!url.match(/^http/)) {
-        console.log('  (Perhaps you meant "http://' + url + '")');
-      }
     } else {
       page.injectJs("vendor/jquery-1.8.2.js");
       page.injectJs("vendor/underscore-1.4.2.js");
