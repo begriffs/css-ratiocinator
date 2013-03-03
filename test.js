@@ -8,8 +8,8 @@
   phantom.injectJs('./vendor/phantom-jasmine/console-runner.js');
   jasmine.getEnv().addReporter(new jasmine.ConsoleReporter());
 
-  var fs = require('fs'),
-    webpage = require('webpage'),
+  var fs      = require('fs'),
+    resource  = require('./lib/resource.js'),
     scenarios = _.map(
       _.filter(
         fs.list(fs.workingDirectory + fs.separator + 'test'),
@@ -33,20 +33,13 @@
   }
 
   _.each(scenarios, function (scenario) {
-    var page = webpage.create();
-    page.open(scenario, function (status) {
-      var expected, calculated;
-
-      page.injectJs("vendor/jquery-1.8.2.js");
-      page.injectJs("vendor/underscore-1.4.2.js");
-      page.injectJs('lib/css.js');
-
-      expected = page.evaluate(function () {
-        return window.expectedStyle;
-      });
-      calculated = page.evaluate(function () {
-        return window.simplerStyle();
-      });
+    resource.loadWithLibs(scenario, false, function (page) {
+      var expected = page.evaluate(function () {
+          return window.expectedStyle;
+        }),
+        calculated = page.evaluate(function () {
+          return window.simplerStyle();
+        });
 
       describe(scenario, function () {
         it("should see expected style", function () {
