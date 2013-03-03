@@ -4,20 +4,19 @@
   "use strict";
 
   var url, fonts,
-    _              = require('./vendor/underscore-1.4.2.js'),
-    args           = require('system').args.slice(1),
-    fs             = require('fs'),
-    page           = require('webpage').create(),
-    verbose        = false,
-    isOptionOrFlag = function(item) {
+    _               = require('./vendor/underscore-1.4.2.js'),
+    args            = require('system').args.slice(1),
+    fs              = require('fs'),
+    page            = require('webpage').create(),
+    verbose         = false,
+    isOptionOrFlag  = function (item) {
       return item.length > 0 && item[0] === '-';
-    };
+    },
+    optionsAndFlags = _.filter(args, isOptionOrFlag);
 
   // parse arguments {{{
 
-  var optionsAndFlags = _.filter(args, isOptionOrFlag);
-  args                = _.reject(args, isOptionOrFlag);
-
+  args    = _.reject(args, isOptionOrFlag);
   verbose = _.contains(optionsAndFlags, '-v') || _.contains(optionsAndFlags, '--verbose');
 
   if (args.length < 1 && verbose) {
@@ -35,7 +34,7 @@
       if (verbose) {
         console.log('Missing protocol, assuming http');
       }
-    } else if(verbose) {
+    } else if (verbose) {
       console.log('"' + url + '" exists locally, using that.');
       console.log('Prepend a protocol (e.g. http:// or https://) to override this behavior');
     }
