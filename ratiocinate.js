@@ -6,8 +6,7 @@
   var url, fonts,
     _               = require('./vendor/underscore-1.4.2.js'),
     args            = require('system').args.slice(1),
-    fs              = require('fs'),
-    page            = require('webpage').create(),
+    resource        = require('./lib/resource.js'),
     verbose         = false,
     isOptionOrFlag  = function (item) {
       return item.length > 0 && item[0] === '-';
@@ -22,51 +21,24 @@
   if (args.length < 1 && verbose) {
     console.log("No URL specified, please pass the name of a URL or file you'd like analysed");
   } else {
-    url = args[0];
-  }
-
-  // assume http if no protocol is specified
-  // and we're not looking at a local file
-  if (!url.match(/:\/\//)) {
-    if (!fs.exists(url)) {
-      url = 'http://' + url;
-
-      if (verbose) {
-        console.log('Missing protocol, assuming http');
-      }
-    } else if (verbose) {
-      console.log('"' + url + '" exists locally, using that.');
-      console.log('Prepend a protocol (e.g. http:// or https://) to override this behavior');
-    }
+    url = resource.resolveUrl(args[0], verbose);
   }
 
   // }}} parse arguments
 
-  page.onConsoleMessage = function (msg) {
-    console.log(msg);
-  };
+  resource.loadWithLibs(url, verbose, function (page) {
+    page.evaluate(function () {
+      var styles = window.simplerStyle();
 
-  page.open(url, function (status) {
-    if (status !== 'success' && verbose) {
-      console.log('Failed to load "' + url + '"');
-    } else {
-      page.injectJs("vendor/jquery-1.8.2.js");
-      page.injectJs("vendor/underscore-1.4.2.js");
-      page.injectJs('lib/css.js');
+      console.log("/* Begin computed CSS */");
 
-      page.evaluate(function () {
-        var styles = window.simplerStyle();
+      fonts = window.fontDeclarations().join("\n\n");
+      if (fonts) { console.log(fonts + "\n"); }
 
-        console.log("/* Begin computed CSS */");
-
-        fonts = window.fontDeclarations().join("\n\n");
-        if (fonts) { console.log(fonts + "\n"); }
-
-        _.each(_.pairs(styles), function (pair) {
-          console.log(window.renderStyle(pair[0], pair[1]));
-        });
+      _.each(_.pairs(styles), function (pair) {
+        console.log(window.renderStyle(pair[0], pair[1]));
       });
-    }
+    });
     phantom.exit();
   });
 }());
