@@ -1,5 +1,5 @@
 /*jslint browser: true, indent: 2, nomen: true */
-/*global phantom, require, console, $, _, simplerStyle, jasmine, describe, it, expect */
+/*global phantom, require, console, $, _, CSS, jasmine, describe, it, expect */
 (function () {
   "use strict";
 
@@ -38,7 +38,7 @@
           return window.expectedStyle;
         }),
         calculated = page.evaluate(function () {
-          return window.simplerStyle();
+          return CSS.simplerStyle();
         });
 
       describe(scenario, function () {

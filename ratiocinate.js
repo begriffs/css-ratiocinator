@@ -1,5 +1,6 @@
 /*jslint browser: true, indent: 2, nomen: true */
-/*global phantom, require, console, $, simplerStyle, _ */
+/*global phantom, CSS, require, console, $, simplerStyle, _ */
+
 (function () {
   "use strict";
 
@@ -28,15 +29,15 @@
 
   resource.loadWithLibs(url, verbose, function (page) {
     page.evaluate(function () {
-      var styles = window.simplerStyle();
+      var styles = CSS.simplerStyle();
 
       console.log("/* Begin computed CSS */");
 
-      fonts = window.fontDeclarations().join("\n\n");
+      fonts = CSS.fontDeclarations().join("\n\n");
       if (fonts) { console.log(fonts + "\n"); }
 
       _.each(_.pairs(styles), function (pair) {
-        console.log(window.renderStyle(pair[0], pair[1]));
+        console.log(CSS.renderStyle(pair[0], pair[1]));
       });
     });
     phantom.exit();
