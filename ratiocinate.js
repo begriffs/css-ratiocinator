@@ -7,6 +7,8 @@
     _               = require('./vendor/underscore-1.4.2.js'),
     args            = require('system').args.slice(1),
     resource        = require('./lib/resource.js'),
+    obj             = require('./lib/obj.js'),
+    css             = require('./lib/css.js'),
     verbose         = false,
     isOptionOrFlag  = function (item) {
       return item.length > 0 && item[0] === '-';
@@ -34,7 +36,20 @@
       var intervals = page.evaluate(function () { return CSS.mediaWidthIntervals(); }),
         fonts = page.evaluate(function () { return CSS.fontDeclarations().join('\n\n'); }),
         toGo = intervals.length,
-        combineIntervals = function () { },
+        combineIntervals = function () {
+          var properties = _.pluck(styles, 'properties'),
+            commonSelectors = _.uniq(_.flatten(_.map(properties, _.keys))),
+            commonStyle = _.reduce(
+              commonSelectors,
+              function (memo, selector) {
+                memo[selector] = obj.intersection(_.pluck(properties, selector));
+                return memo;
+              },
+              {}
+            );
+
+          console.log(_.map(commonStyle, css.renderStyle).join('\n'));
+        },
         addStyle = function (interval) {
           return function (page) {
             styles.push({
@@ -53,7 +68,7 @@
 
       if (fonts) { console.log(fonts + '\n'); }
 
-      _.each(intervals, function (interval, i) {
+      _.each(intervals, function (interval) {
         resource.loadWithLibs(
           url,
           false,
