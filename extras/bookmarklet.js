@@ -1,5 +1,5 @@
 /*jslint browser: true, indent: 2, nomen: true */
-/*global _, jQuery, $, console */
+/*global _, jQuery, $, console, CSS */
 
 (function () {
   "use strict";
@@ -8,16 +8,21 @@
     var $ = jQuery.noConflict(), iframe_src = $('<iframe />'),
       iframe_dst = $('<iframe>Computing new style...</iframe>');
 
+    console.log("WARNING: this bookmarklet is deprecated.");
+    console.log("To use the the full features of Ratiocinator, try either of these options.");
+    console.log("1. Use the web interface: http://www.csstrashman.com");
+    console.log("2. Run the command-line version: https://github.com/begriffs/css-ratiocinator#usage");
+
     iframe_src.attr('id', 'ratio_src');
     iframe_src.attr('style', 'position: absolute; top: 0; left: 0; height: 100%; width: 50%; border-right: 1px solid black;');
     iframe_src.load(function () {
-      var styles = window.simplerStyle($(window.frames.ratio_src.document.getElementsByTagName('html')[0])),
+      var styles = CSS.simplerStyle($(window.frames.ratio_src.document.getElementsByTagName('html')[0])),
         style_tag = $('<style type="text/css" media="all" />'),
         css = '';
       window.frames.ratio_dst.document.body.innerHTML = window.frames.ratio_src.document.body.innerHTML;
 
       _.each(_.pairs(styles), function (pair) {
-        css += window.renderStyle(pair[0], pair[1]);
+        css += CSS.renderStyle(pair[0], pair[1]);
       });
       style_tag.html(css);
       $('head', window.frames.ratio_dst.document).append(style_tag);
@@ -37,11 +42,15 @@
   script.onload = function () {
     jQuery.getScript(
       'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js',
-
       function () {
         jQuery.getScript(
           'https://raw.github.com/begriffs/css-ratiocinator/master/lib/css.js',
-          onScriptsLoaded
+          function () {
+            jQuery.getScript(
+              'https://raw.github.com/begriffs/css-ratiocinator/master/lib/obj.js',
+              onScriptsLoaded
+            );
+          }
         );
       }
     );

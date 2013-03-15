@@ -12,7 +12,7 @@ provides a harmonious new beginning.
 
 ## Usage
 
-The **easiest way** is to use the web interface
+The easiest way is to use the **web interface**
 [csstrashman.com](http://www.csstrashman.com).
 
 Alternatively, this program runs from the **command line** using the
@@ -24,9 +24,12 @@ PhantomJS headless browser.
 1. The new CSS will appear.
 1. (optionally) Feed output through [sass-convert](http://blog.derekperez.com/post/816063805/move-you-existing-stylebase-over-to-sass-or-scss)
 
-Finally, it runs in the browser as a **bookmarklet**. Execute the
-following to split the browser window with the original page on the left
-and the Ratiocinated version on the right.
+Finally, it runs in the browser as a **bookmarklet**. Please note that
+the bookmarklet is deprecated. It has limitations and will not be
+maintained to match the features of the other methods.
+
+Run the following to split the browser window with the original page on
+the left and the Ratiocinated version on the right.
 
     javascript:(function%20()%20%7Bvar%20script%20=%20document.createElement(%22script%22);script.src%20=%20%22https://raw.github.com/begriffs/css-ratiocinator/master/extras/bookmarklet.js%22;document.getElementsByTagName(%22head%22)[0].appendChild(script);%7D());
 
