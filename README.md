@@ -10,6 +10,8 @@ contradict each other. After a certain point all CSS seems to grow only
 by internal antagonism. The Ratiocinator wipes the slate clean and
 provides a harmonious new beginning.
 
+[![Build Status](https://travis-ci.org/begriffs/css-ratiocinator.png)](https://travis-ci.org/begriffs/css-ratiocinator)
+
 ## Usage
 
 The easiest way is to use the **web interface**
