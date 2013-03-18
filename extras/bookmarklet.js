@@ -11,15 +11,23 @@
     console.log("WARNING: this bookmarklet is deprecated.");
     console.log("To use the the full features of Ratiocinator, try either of these options.");
     console.log("1. Use the web interface: http://www.csstrashman.com");
-    console.log("2. Run the command-line version: https://github.com/begriffs/css-ratiocinator#usage");
+    console.log("2. Run the command-line version: " +
+      "https://github.com/begriffs/css-ratiocinator#usage");
 
     iframe_src.attr('id', 'ratio_src');
-    iframe_src.attr('style', 'position: absolute; top: 0; left: 0; height: 100%; width: 50%; border-right: 1px solid black;');
+    iframe_src.attr(
+      'style',
+      'position: absolute; top: 0; left: 0; height: 100%; ' +
+        'width: 50%; border-right: 1px solid black;'
+    );
     iframe_src.load(function () {
-      var styles = CSS.simplerStyle($(window.frames.ratio_src.document.getElementsByTagName('html')[0])),
+      var styles = CSS.simplerStyle(
+          $(window.frames.ratio_src.document.getElementsByTagName('html')[0])
+        ),
         style_tag = $('<style type="text/css" media="all" />'),
         css = '';
-      window.frames.ratio_dst.document.body.innerHTML = window.frames.ratio_src.document.body.innerHTML;
+      window.frames.ratio_dst.document.body.innerHTML =
+        window.frames.ratio_src.document.body.innerHTML;
 
       _.each(_.pairs(styles), function (pair) {
         css += CSS.renderStyle(pair[0], pair[1]);
