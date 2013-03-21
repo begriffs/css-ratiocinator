@@ -1,5 +1,4 @@
-/*jslint browser: true, indent: 2, nomen: true */
-/*global _, jQuery, $, console, CSS */
+/* global _, jQuery, $, console, CSS */
 
 (function () {
   "use strict";

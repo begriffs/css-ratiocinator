@@ -1,5 +1,4 @@
-/*jslint browser: true, indent: 2, nomen: true */
-/*global phantom, CSS, require, console, $, simplerStyle, _ */
+/* global phantom, CSS, require, console, $, simplerStyle, _ */
 
 (function () {
   "use strict";
