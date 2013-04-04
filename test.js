@@ -1,4 +1,4 @@
-/* global phantom, require, _, CSS, jasmine, describe, it, expect */
+/* global phantom, require, _, jasmine, describe, it, expect */
 (function () {
   'use strict';
 
@@ -7,9 +7,9 @@
   phantom.injectJs('./vendor/phantom-jasmine/console-runner.js');
   jasmine.getEnv().addReporter(new jasmine.ConsoleReporter());
 
-  var fs      = require('fs'),
-    resource  = require('./lib/resource.js'),
-    scenarios = _.map(
+  var fs       = require('fs'),
+    responsive = require('./lib/responsive.js'),
+    scenarios  = _.map(
       _.filter(
         fs.list(fs.workingDirectory + fs.separator + 'test'),
         function (filename) { return filename.match(/\.html$/); }
@@ -32,17 +32,14 @@
   }
 
   _.each(scenarios, function (scenario) {
-    resource.loadWithLibs(scenario, false, function (page) {
+    responsive.stylesByMediaQuery(scenario, function (styles, page) {
       var expected = page.evaluate(function () {
           return window.expectedStyle;
-        }),
-        calculated = page.evaluate(function () {
-          return CSS.simplerStyle();
         });
 
       describe(scenario, function () {
         it('should see expected style', function () {
-          expect(expected).toEqual(calculated);
+          expect(expected).toEqual(styles);
         });
       });
 
