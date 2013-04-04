@@ -7,14 +7,13 @@
     _               = require('./vendor/underscore-1.4.2.js'),
     args            = require('system').args.slice(1),
     resource        = require('./lib/resource.js'),
-    obj             = require('./lib/obj.js'),
+    responsive      = require('./lib/responsive.js'),
     css             = require('./lib/css.js'),
     verbose         = false,
     isOptionOrFlag  = function (item) {
       return item.length > 0 && item[0] === '-';
     },
-    optionsAndFlags = _.filter(args, isOptionOrFlag),
-    styles = [];
+    optionsAndFlags = _.filter(args, isOptionOrFlag);
 
   // parse arguments {{{
 
@@ -29,53 +28,21 @@
 
   // }}} parse arguments
 
-  resource.loadWithLibs(
-    url,
-    verbose,
-    function (page) {
-      var intervals = page.evaluate(function () { return CSS.mediaWidthIntervals(); }),
-        fonts = page.evaluate(function () { return CSS.fontDeclarations().join('\n\n'); }),
-        toGo = intervals.length,
-        combineIntervals = function () {
-          var properties = _.pluck(styles, 'properties'),
-            commonSelectors = _.uniq(_.flatten(_.map(properties, _.keys))),
-            commonStyle = _.reduce(
-              commonSelectors,
-              function (memo, selector) {
-                memo[selector] = obj.intersection(_.pluck(properties, selector));
-                return memo;
-              },
-              {}
-            );
+  responsive.stylesByMediaQuery(url, function (styles, page) {
+    var fonts = page.evaluate(function () { return CSS.fontDeclarations().join('\n\n'); });
+    if (fonts) { console.log(fonts + '\n'); }
 
-          console.log(_.map(commonStyle, css.renderStyle).join('\n'));
-        },
-        addStyle = function (interval) {
-          return function (page) {
-            styles.push({
-              properties: page.evaluate(function () {
-                return CSS.simplerStyle();
-              }),
-              interval: interval
-            });
-            toGo -= 1;
-            if (toGo < 1) {
-              combineIntervals();
-              phantom.exit();
-            }
-          };
-        };
+    _.each(styles, function (properties, mediaQuery) {
+      if (mediaQuery) { console.log(mediaQuery + ' {'); }
+      console.log(_.map(
+        properties,
+        function (style, selector) {
+          return css.renderStyle(style, selector, mediaQuery ? 1 : 0);
+        }
+      ).join('\n'));
+      if (mediaQuery) { console.log('}\n'); }
+    });
 
-      if (fonts) { console.log(fonts + '\n'); }
-
-      _.each(intervals, function (interval) {
-        resource.loadWithLibs(
-          url,
-          false,
-          addStyle(interval),
-          interval.sample
-        );
-      });
-    }
-  );
+    phantom.exit();
+  });
 }());
