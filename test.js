@@ -1,5 +1,4 @@
-/*jslint browser: true, indent: 2, nomen: true */
-/*global phantom, require, console, $, _, CSS, jasmine, describe, it, expect */
+/* global phantom, require, console, $, _, CSS, jasmine, describe, it, expect */
 (function () {
   "use strict";
 

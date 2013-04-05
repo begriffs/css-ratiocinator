@@ -1,7 +1,7 @@
 language: node_js
 node_js:
   - 0.10
-before_install: "npm install -g nodelint"
+before_install: "npm install -g jshint"
 script:
-  - nodelint ./*.js lib/*.js extras/*.js
+  - jshint ./*.js lib/*.js extras/*.js
   - phantomjs test.js
