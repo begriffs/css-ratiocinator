@@ -1,13 +1,11 @@
 /* global phantom, require, console, _, jQuery, CSSImportRule */
 (function () {
-  "use strict";
+  'use strict';
 
-  var system = require('system'),
-    resource = require('./lib/resource.js'),
-    async    = require('./lib/async.js'),
-    args     = require('system').args.slice(1),
-    page     = require('webpage').create(),
-    url      = resource.resolveUrl(args[0], false);
+  var resource = require('./lib/resource.js'),
+    async      = require('./lib/async.js'),
+    args       = require('system').args.slice(1),
+    url        = resource.resolveUrl(args[0], false);
 
   resource.loadWithLibs(url, false, function (page) {
     var externalCSSUrls, internalCSS;
@@ -29,21 +27,21 @@
         function (text) {
           return !text.match(/@import/);
         }
-      ).join("\n");
+      ).join('\n');
     });
     console.log(internalCSS);
 
     async.mapAndThen(
       externalCSSUrls,
       function (url, continuation) {
-        page.evaluate(function (url, continuation) {
+        page.evaluate(function (url) {
           var $ = jQuery.noConflict();
           console.log($.ajax({
             url: url,
             dataType: 'html',
             async: false
           }).responseText);
-        }, url, continuation);
+        }, url);
         continuation(url);
       },
       phantom.exit

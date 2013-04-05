@@ -1,6 +1,6 @@
-/* global phantom, require, console, $, _, CSS, jasmine, describe, it, expect */
+/* global phantom, require, _, CSS, jasmine, describe, it, expect */
 (function () {
-  "use strict";
+  'use strict';
 
   phantom.injectJs('./vendor/underscore-1.4.2.js');
   phantom.injectJs('./vendor/jasmine-1.3.1/jasmine.js');
@@ -41,7 +41,7 @@
         });
 
       describe(scenario, function () {
-        it("should see expected style", function () {
+        it('should see expected style', function () {
           expect(expected).toEqual(calculated);
         });
       });

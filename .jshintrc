@@ -1,5 +1,20 @@
 {
+  "bitwise": true,
   "browser": true,
+  "camelcase": true,
+  "curly": true,
+  "eqeqeq": true,
+  "forin": true,
+  "immed": true,
   "indent": 2,
-  "undef": true
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "noempty": true,
+  "nonew": true,
+  "plusplus": true,
+  "quotmark": "single",
+  "trailing": true,
+  "undef": true,
+  "unused": true
 }

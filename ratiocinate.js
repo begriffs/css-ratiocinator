@@ -1,7 +1,7 @@
-/* global phantom, CSS, require, console, $, simplerStyle, _ */
+/* global phantom, CSS, require, console */
 
 (function () {
-  "use strict";
+  'use strict';
 
   var url, fonts,
     _               = require('./vendor/underscore-1.4.2.js'),
@@ -19,7 +19,7 @@
   verbose = _.contains(optionsAndFlags, '-v') || _.contains(optionsAndFlags, '--verbose');
 
   if (args.length < 1 && verbose) {
-    console.log("No URL specified, please pass the name of a URL or file you'd like analysed");
+    console.log('No URL specified, please pass the name of a URL or file you\'d like analysed');
   } else {
     url = resource.resolveUrl(args[0], verbose);
   }
@@ -30,10 +30,10 @@
     page.evaluate(function () {
       var styles = CSS.simplerStyle();
 
-      console.log("/* Begin computed CSS */");
+      console.log('/* Begin computed CSS */');
 
-      fonts = CSS.fontDeclarations().join("\n\n");
-      if (fonts) { console.log(fonts + "\n"); }
+      fonts = CSS.fontDeclarations().join('\n\n');
+      if (fonts) { console.log(fonts + '\n'); }
 
       _.each(_.pairs(styles), function (pair) {
         console.log(CSS.renderStyle(pair[0], pair[1]));
