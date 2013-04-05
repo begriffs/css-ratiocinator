@@ -106,7 +106,7 @@ request. Luckily that's easy too:
 1. Add a new test by copying `test/template.html` and filling in the blanks.
 1. Save your new test in the `test/` folder.
 1. Run `phantomjs test.js` and make sure it fails.
-1. Submit pull request.
+1. Submit pull request to the `bug-reports` branch.
 
 ## License
 
