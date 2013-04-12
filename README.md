@@ -26,15 +26,6 @@ PhantomJS headless browser.
 1. The new CSS will appear.
 1. (optionally) Feed output through [sass-convert](http://blog.derekperez.com/post/816063805/move-you-existing-stylebase-over-to-sass-or-scss)
 
-Finally, it runs in the browser as a **bookmarklet**. Please note that
-the bookmarklet is deprecated. It has limitations and will not be
-maintained to match the features of the other methods.
-
-Run the following to split the browser window with the original page on
-the left and the Ratiocinated version on the right.
-
-    javascript:(function%20()%20%7Bvar%20script%20=%20document.createElement(%22script%22);script.src%20=%20%22https://raw.github.com/begriffs/css-ratiocinator/master/extras/bookmarklet.js%22;document.getElementsByTagName(%22head%22)[0].appendChild(script);%7D());
-
 ## Faq
 
 <dl>
@@ -93,6 +84,11 @@ are more blue items than red in element `aside.foo`, there are more red
 elements overall. The red has greater "volume." Hence the Ratiocinator
 will extract styles for all elements with class `foo` first and then for
 `aside` elements second.
+
+Finally the Ratiocinator detects media query width breakpoints and
+samples the page style between them. It analyzes the responsive
+portfolio and extracts common base-style. It outputs the base-style and
+each width-specific style with appropriate media queries.
 
 ## Contributing
 

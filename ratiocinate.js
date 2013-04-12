@@ -3,10 +3,12 @@
 (function () {
   'use strict';
 
-  var url, fonts,
+  var url,
     _               = require('./vendor/underscore-1.4.2.js'),
     args            = require('system').args.slice(1),
     resource        = require('./lib/resource.js'),
+    responsive      = require('./lib/responsive.js'),
+    css             = require('./lib/css.js'),
     verbose         = false,
     isOptionOrFlag  = function (item) {
       return item.length > 0 && item[0] === '-';
@@ -26,19 +28,21 @@
 
   // }}} parse arguments
 
-  resource.loadWithLibs(url, verbose, function (page) {
-    page.evaluate(function () {
-      var styles = CSS.simplerStyle();
+  responsive.stylesByMediaQuery(url, function (styles, page) {
+    var fonts = page.evaluate(function () { return CSS.fontDeclarations().join('\n\n'); });
+    if (fonts) { console.log(fonts + '\n'); }
 
-      console.log('/* Begin computed CSS */');
-
-      fonts = CSS.fontDeclarations().join('\n\n');
-      if (fonts) { console.log(fonts + '\n'); }
-
-      _.each(_.pairs(styles), function (pair) {
-        console.log(CSS.renderStyle(pair[0], pair[1]));
-      });
+    _.each(styles, function (properties, mediaQuery) {
+      if (mediaQuery) { console.log(mediaQuery + ' {'); }
+      console.log(_.map(
+        properties,
+        function (style, selector) {
+          return css.renderStyle(style, selector, mediaQuery ? 1 : 0);
+        }
+      ).join('\n'));
+      if (mediaQuery) { console.log('}\n'); }
     });
+
     phantom.exit();
   });
 }());

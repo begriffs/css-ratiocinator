@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+  <style type="text/css">
+    body {
+      background-color: red;
+    }
+    @media print {
+      body {
+        background-color: white;
+      }
+    }
+  </style>
+
+  <script>
+    window.expectedStyle = {
+      '': {
+        'body': {
+          'background-color': 'red',
+        }
+      }
+    };
+  </script>
+</head>
+<body>
+  <p>Hi</p>
+</body>
+</html>

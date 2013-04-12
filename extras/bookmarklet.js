@@ -12,6 +12,10 @@
     console.log('1. Use the web interface: http://www.csstrashman.com');
     console.log('2. Run the command-line version: ' +
       'https://github.com/begriffs/css-ratiocinator#usage');
+    window.alert(
+      'This bookmarklet does not support media queries and is deprecated.' +
+        'Visit http://www.csstrashman.com to do a full refactor.'
+    );
 
     iframeSrc.attr('id', 'ratio_src');
     iframeSrc.attr(

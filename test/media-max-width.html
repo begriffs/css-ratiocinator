@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+  <style type="text/css">
+    body {
+      background-color: green;
+      color: grey;
+    }
+    p {
+      margin: 1em;
+    }
+    @media (max-width:500px) {
+      body {
+        background-color: red;
+        color: grey;
+      }
+      p {
+        margin: 1em;
+      }
+    }
+  </style>
+
+  <script>
+    window.expectedStyle = {
+      '': {
+        'body': {
+          'color': 'rgb(128, 128, 128)'
+        },
+        'p': {
+          'margin': '1em'
+        }
+      },
+      '@media (max-width: 500px)': {
+        'body': {
+          'background-color': 'red'
+        }
+      },
+      '@media (min-width: 501px)': {
+        'body': {
+          'background-color': 'green'
+        }
+      }
+    };
+  </script>
+</head>
+<body>
+  <p>Hi</p>
+</body>
+</html>

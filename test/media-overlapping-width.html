@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+  <style type="text/css">
+    @media (min-width:10px) and (max-width:30px) {
+      p {
+        background-color: red;
+      }
+    }
+    @media (min-width:20px) and (max-width:40px) {
+      p {
+        color: blue;
+      }
+    }
+  </style>
+
+  <script>
+    window.expectedStyle = {
+      '@media (min-width: 10px) and (max-width: 19px)': {
+        'p': {
+          'background-color': 'red'
+        }
+      },
+      '@media (min-width: 20px) and (max-width: 30px)': {
+        'p': {
+          'background-color': 'red',
+          'color': 'blue'
+        }
+      },
+      '@media (min-width: 31px) and (max-width: 40px)': {
+        'p': {
+          'color': 'blue'
+        }
+      }
+    };
+  </script>
+</head>
+<body>
+  <p>Hi</p>
+</body>
+</html>
