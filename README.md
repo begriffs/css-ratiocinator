@@ -85,6 +85,11 @@ elements overall. The red has greater "volume." Hence the Ratiocinator
 will extract styles for all elements with class `foo` first and then for
 `aside` elements second.
 
+Finally the Ratiocinator detects media query width breakpoints and
+samples the page style between them. It analyzes the responsive
+portfolio and extracts common base-style. It outputs the base-style and
+each width-specific style with appropriate media queries.
+
 ## Contributing
 
 It is currently very easy to contribute. Just find something that the
