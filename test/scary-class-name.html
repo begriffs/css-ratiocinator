@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+  <style>
+    .menu-\%d0\%bc\%d0\%be\%d1\%91-\%d0\%bc\%d0\%b5\%d0\%bd\%d1\%8e-container {
+      color: red;
+    }
+  </style>
+  <script>
+    window.expectedStyle = {
+      '': {
+        '.menu-\\%d0\\%bc\\%d0\\%be\\%d1\\%91-\\%d0\\%bc\\%d0\\%b5\\%d0\\%bd\\%d1\\%8e-container': {
+          'color': 'red'
+        }
+      }
+    };
+  </script>
+</head>
+<body>
+  <div class="menu-%d0%bc%d0%be%d1%91-%d0%bc%d0%b5%d0%bd%d1%8e-container">
+    One
+  </div>
+  <div>
+    Two
+  </div>
+</body>
+</html>
