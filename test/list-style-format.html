@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+  <style>
+    .custom li {
+    list-style-type:square;
+    }
+  </style>
+
+  <script>
+    window.expectedStyle = {
+      '': {
+        '.custom li': { 'list-style-type': 'square' }
+      }
+    };
+  </script>
+</head>
+<body>
+  <ul class="custom">
+    <li>An item</li>
+  </ul>
+</body>
+</html>
