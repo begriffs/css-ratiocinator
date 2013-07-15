@@ -25,7 +25,7 @@
       var oldCallback = jasmine.getEnv().currentRunner().finishCallback;
       jasmine.getEnv().currentRunner().finishCallback = function () {
         oldCallback.apply(this, arguments);
-        phantom.exit();
+        phantom.exit(jasmine.getEnv().currentRunner().queue.results().passed() ? 0 : 1);
       };
       jasmine.getEnv().execute();
     }
