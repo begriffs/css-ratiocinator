@@ -90,6 +90,40 @@ samples the page style between them. It analyzes the responsive
 portfolio and extracts common base-style. It outputs the base-style and
 each width-specific style with appropriate media queries.
 
+## Bugs and Edge Cases
+
+Currently, anything Phantom considers to be an invalid property, value,
+or selector is discarded. This means that the following CSS...
+
+```css
+body {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+::selection{
+  background:rgba(246,55,0,0.9);
+  color:#fff;
+}
+::-moz-selection{
+  background:rgba(246,55,0,0.9);
+  color:#fff;
+}
+```
+
+Is compressed to the following CSS...
+
+```css
+body {
+  display: -webkit-box;
+}
+```
+
+This is an invalid compression. A solution is being worked on in
+[issue #52][issue52].
+
 ## Contributing
 
 It is currently very easy to contribute. Just find something that the
@@ -109,3 +143,5 @@ request. Luckily that's easy too:
 The CSS Ratiocinator is Copyright © 2012 Joe Nelson. It is free
 software, and may be redistributed under the terms specified in the
 LICENSE file.
+
+  [issue52]: https://github.com/begriffs/css-ratiocinator/issues/52 "Issue #52"
