@@ -14,10 +14,7 @@ provides a harmonious new beginning.
 
 ## Usage
 
-The easiest way is to use the **web interface**
-[csstrashman.com](http://www.csstrashman.com).
-
-Alternatively, this program runs from the **command line** using the
+This program runs from the command line using the
 PhantomJS headless browser.
 
 1. Install [PhantomJS](http://phantomjs.org/)
