@@ -20,7 +20,7 @@
   args    = _.reject(args, isOptionOrFlag);
   verbose = _.contains(optionsAndFlags, '-v') || _.contains(optionsAndFlags, '--verbose');
 
-  if (args.length < 1 && verbose) {
+  if ((args.length < 1 && verbose) || !args[0]) {
     console.log('No URL specified, please pass the name of a URL or file you\'d like analysed');
   } else {
     url = resource.resolveUrl(args[0], verbose);
